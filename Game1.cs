@@ -143,7 +143,7 @@ namespace Pacman
             Pacman.Draw(_spriteBatch, spriteSheet1);
 
             //gameController.drawGridDebugger(_spriteBatch);
-            //gameController.drawPacmanGridDebugger(_spriteBatch);
+            gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);
 
             _spriteBatch.End();

@@ -45,8 +45,8 @@ namespace Pacman
             { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
 
-        int numberOfTilesY;
-        int numberOfTilesX;
+        public static int numberOfTilesY;
+        public static int numberOfTilesX;
         public static int tileWidth;
         public static int tileHeight;
         public Tile[,] tileArray;
@@ -133,7 +133,14 @@ namespace Pacman
         { // tile != new int[2] {0, 14} && tile != new int[2] {numberOfTilesX-1 ,14}
             if (tile.SequenceEqual(new int[2] { 0, 14 }) || tile.SequenceEqual(new int[2] { numberOfTilesX - 1 ,14}))
             {
-                return false;
+                if (dir == Dir.Right || dir == Dir.Left)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

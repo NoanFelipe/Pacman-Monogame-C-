@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -131,7 +131,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X;
+                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X+2;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -140,7 +140,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X;
+                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X+2;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -197,10 +197,46 @@ namespace Pacman
             playerAnim.Draw(spriteBatch, spriteSheet, new Vector2(gridPosition.X - radiusOffSet / 2, gridPosition.Y - radiusOffSet / 2 + 1));
         }
 
+        public int checkForTeleportPos(Tile[,] tileArray)
+        {
+            if (currentTile.SequenceEqual(new int[2] { 0, 14 }))
+            {
+                if (gridPosition.X < -30)
+                {
+                    return 1;
+                }
+            }else if (currentTile.SequenceEqual(new int[2] { Controller.numberOfTilesX - 1, 14 }))
+            {
+                if (gridPosition.X > tileArray[currentTile[0], currentTile[1]].Position.X + 30)
+                {
+                    return 2;
+                }
+            }
+            return 0;
+        }
+
+        public void teleport(Vector2 pos, int[] tilePos)
+        {
+            gridPosition = pos;
+            previousTile = currentTile;
+            currentTile = tilePos;
+        }
+
         public void updatePlayerTilePosition(Tile[,] tileArray)
         {
             tileArray[previousTile[0], previousTile[1]].tileType = Tile.TileType.None;
             tileArray[currentTile[0], currentTile[1]].tileType = Tile.TileType.Player;
+
+            if (checkForTeleportPos(tileArray) == 1)
+            {
+                if (direction == Dir.Left)
+                    teleport(new Vector2(Game1.windowWidth + 30, gridPosition.Y), new int[2] { Controller.numberOfTilesX - 1, 14 });
+            }
+            else if (checkForTeleportPos(tileArray) == 2)
+            {
+                if (direction == Dir.Right)
+                    teleport(new Vector2(-30, gridPosition.Y), new int[2] { 0 , 14 });
+            }
 
             for (int x = 0; x < tileArray.GetLength(0); x++)
             {
