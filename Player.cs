@@ -57,6 +57,16 @@ namespace Pacman
             playerAnim = new SpriteAnimation(0.08f, rectsRight);
         }
 
+        public Vector2 CurrentTile
+        {
+            get { return new Vector2(currentTile[0], currentTile[1]); }
+        }
+
+        public Vector2 PreviousTile
+        {
+            get { return new Vector2(previousTile[0], previousTile[1]); }
+        }
+
         public Vector2 GridPosition
         {
             get { return gridPosition; }

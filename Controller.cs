@@ -129,6 +129,18 @@ namespace Pacman
             }
         }
 
+        public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Node> nodes)
+        {
+            foreach (Node node in nodes)
+            {
+                Vector2 nodePos = tileArray[(int)node.pos.X, (int)node.pos.Y].Position;
+                spriteBatch.Draw(Game1.playerDebugLineX, nodePos, Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineY, nodePos, Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineX, new Vector2(nodePos.X, nodePos.Y + 24), Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineY, new Vector2(nodePos.X + 24, nodePos.Y), Color.White);
+            }
+        }
+
         public bool isNextTileAvailable(Dir dir, int[] tile)
         { // tile != new int[2] {0, 14} && tile != new int[2] {numberOfTilesX-1 ,14}
             if (tile.SequenceEqual(new int[2] { 0, 14 }) || tile.SequenceEqual(new int[2] { numberOfTilesX - 1 ,14}))

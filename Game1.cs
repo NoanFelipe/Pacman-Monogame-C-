@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -49,6 +51,8 @@ namespace Pacman
         Player Pacman;
 
         public static int score;
+
+        private List<Node> testPath;
 
         public Game1()
         {
@@ -105,7 +109,9 @@ namespace Pacman
             Pacman = new Player(13, 23, gameController.tileArray);
 
             MySounds.game_start.Play();
-            gameStartSongLength = 4.228f;
+            gameStartSongLength = 4.23f;
+
+            testPath = new List<Node>();
         }
 
         protected override void Update(GameTime gameTime)
@@ -119,10 +125,11 @@ namespace Pacman
             {
                 gameStartTimer += dt;
             }
-            else
+            else // add update stuff here
             {
-                Pacman.updatePlayerTilePosition(gameController.tileArray);
+                Pacman.updatePlayerTilePosition(gameController.tileArray); 
                 Pacman.Update(gameTime, gameController.tileArray);
+                testPath = Pathfinding.findPath(Pacman.CurrentTile, new Vector2(1, 1), gameController.tileArray);
             }
 
             base.Update(gameTime);
@@ -143,8 +150,9 @@ namespace Pacman
             Pacman.Draw(_spriteBatch, spriteSheet1);
 
             //gameController.drawGridDebugger(_spriteBatch);
-            gameController.drawPacmanGridDebugger(_spriteBatch);
+            //gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);
+            gameController.drawPathFindingDebugger(_spriteBatch, testPath);
 
             _spriteBatch.End();
 

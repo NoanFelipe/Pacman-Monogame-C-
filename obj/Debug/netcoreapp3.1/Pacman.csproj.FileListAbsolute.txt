@@ -90,3 +90,4 @@ C:\Users\QAT Employee\Desktop\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.
 C:\Users\QAT Employee\Desktop\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.1\Pacman.csproj.CopyComplete
 C:\Users\QAT Employee\Desktop\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.1\Pacman.genruntimeconfig.cache
 C:\Users\QAT Employee\Desktop\Pacman Related Stuff\Pacman\bin\Debug\netcoreapp3.1\Content\SpriteSheets\TextSprites.xnb
+C:\Users\noanf\OneDrive\Área de Trabalho\Programação\C#\My projects\Pacman\bin\Debug\netcoreapp3.1\Content\SpriteSheets\TextSprites.xnb

@@ -10,42 +10,61 @@ namespace Pacman
 {
     public class Node
     {
-        int gCost;
-        int hCost;
-        int fCost;
+        public int gCost;
+        public int hCost;
 
-        bool isWalkable;
+        public Node parent;
+        
+        public int fCost {
+            get {
+                return gCost + hCost;
+            }
+        }
 
-        Vector2 pos;
+        public bool isWalkable;
+
+        public Vector2 pos;
+        Tile tile;
 
         public Node(Vector2 pos, Tile[,] tileArray)
         {
-
-        }
-
-        public Node(Vector2 pos)
-        {
-            this.pos = pos;
-        }
-
-        public Node createNode(Vector2 pos, Tile[,] tileArray)
-        {
-            Tile tile = tileArray[(int)pos.X, (int)pos.Y];
-            Node node = new Node(pos);
-
             if (pos.X < 0 || pos.Y < 0 || pos.X >= Controller.numberOfTilesX || pos.Y >= Controller.numberOfTilesY)
-                return new Node(new Vector2(-100, -100));
-
-            if (tile.tileType == Tile.TileType.Wall)
             {
-                node.isWalkable = false;
+                this.pos = new Vector2(-100, -100);
             }
             else
             {
-                node.isWalkable = true;
+                this.pos = pos;
+                tile = tileArray[(int)pos.X, (int)pos.Y];
+                if (tile.tileType == Tile.TileType.Wall)
+                {
+                    isWalkable = false;
+                }
+                else
+                {
+                    isWalkable = true;
+                }
             }
 
-            return node;
+        }
+
+        public List<Node> getNeighbours(Tile[,] tileArray)
+        {
+            List<Node> neighbours = new List<Node>();
+
+            Node left = new Node(new Vector2(pos.X - 1, pos.Y), tileArray);
+            if (left.pos != new Vector2(-100, -100)) neighbours.Add(left);
+
+            Node right = new Node(new Vector2(pos.X + 1, pos.Y), tileArray);
+            if (right.pos != new Vector2(-100, -100)) neighbours.Add(right);
+
+            Node up = new Node(new Vector2(pos.X, pos.Y -1), tileArray);
+            if (up.pos != new Vector2(-100, -100)) neighbours.Add(up);
+
+            Node down = new Node(new Vector2(pos.X, pos.Y + 1), tileArray);
+            if (down.pos != new Vector2(-100, -100)) neighbours.Add(down);
+
+            return neighbours;
         }
     }
 }
