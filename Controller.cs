@@ -129,15 +129,15 @@ namespace Pacman
             }
         }
 
-        public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Node> nodes)
+        public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Vector2> path)
         {
-            foreach (Node node in nodes)
+            foreach (Vector2 gridPos in path)
             {
-                Vector2 nodePos = tileArray[(int)node.pos.X, (int)node.pos.Y].Position;
-                spriteBatch.Draw(Game1.playerDebugLineX, nodePos, Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineY, nodePos, Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineX, new Vector2(nodePos.X, nodePos.Y + 24), Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineY, new Vector2(nodePos.X + 24, nodePos.Y), Color.White);
+                Vector2 pos = tileArray[(int)gridPos.X, (int)gridPos.Y].Position;
+                spriteBatch.Draw(Game1.playerDebugLineX, pos, Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineY, pos, Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineX, new Vector2(pos.X, pos.Y + 24), Color.White);
+                spriteBatch.Draw(Game1.playerDebugLineY, new Vector2(pos.X + 24, pos.Y), Color.White);
             }
         }
 

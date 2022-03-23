@@ -52,7 +52,7 @@ namespace Pacman
 
         public static int score;
 
-        private List<Node> testPath;
+        private List<Vector2> testPath;
 
         public Game1()
         {
@@ -111,7 +111,7 @@ namespace Pacman
             MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
 
-            testPath = new List<Node>();
+            testPath = new List<Vector2>();
         }
 
         protected override void Update(GameTime gameTime)
@@ -129,7 +129,7 @@ namespace Pacman
             {
                 Pacman.updatePlayerTilePosition(gameController.tileArray); 
                 Pacman.Update(gameTime, gameController.tileArray);
-                testPath = Pathfinding.findPath(Pacman.CurrentTile, new Vector2(1, 1), gameController.tileArray);
+                testPath = Pathfinding.findPath(new Vector2(1,1), Pacman.CurrentTile, gameController.tileArray);
             }
 
             base.Update(gameTime);

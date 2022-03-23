@@ -10,31 +10,30 @@ namespace Pacman
 {
     public class Pathfinding
     {
-        public static List<Node> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray)
+        public static List<Vector2> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray)
         {
             List<Node> openList = new List<Node>();
             List<Node> closedList = new List<Node>();
 
             Node startNode = new Node(startPos, tileArray);
             Node endNode = new Node(endPos, tileArray);
-            openList.Add(startNode);
+            openList.Add(startNode.Copy(tileArray));
 
             bool foundPath = false;
-
-            Node currentNode;
+            Node currentNode = openList[0].Copy(tileArray);
             while (openList != null)
             {
-                currentNode = openList[0];
+                currentNode = openList[0].Copy(tileArray);
                 for (int i = 1; i < openList.Count; i++)
                 {
                     if (openList[i].fCost < currentNode.fCost || openList[i].fCost == currentNode.fCost && openList[i].hCost < currentNode.hCost)
                     {
-                        currentNode = openList[i];
+                        currentNode = openList[i].Copy(tileArray);
                     }
                 }
 
-                openList.Remove(currentNode);
-                closedList.Add(currentNode);
+                deleteNodeOnList(currentNode, openList);
+                closedList.Add(currentNode.Copy(tileArray));
 
                 if (currentNode.pos == endNode.pos)
                 {
@@ -54,11 +53,11 @@ namespace Pacman
                     {
                         neighbour.gCost = newMovementCostToNeighbour;
                         neighbour.hCost = getDistance(neighbour, endNode);
-                        neighbour.parent = currentNode;
+                        neighbour.setParent(currentNode.Copy(tileArray));
 
                         if (!isNodeInsideList(neighbour, openList))
                         {
-                            openList.Add(neighbour);
+                            openList.Add(neighbour.Copy(tileArray));
                         }
                     }
                 }
@@ -66,27 +65,50 @@ namespace Pacman
 
             if (foundPath)
             {
-                return retracePath(startNode, endNode);
+                //return retracePath(currentNode.Copy(tileArray), endNode.Copy(tileArray), tileArray);
+                List<Vector2> path = new List<Vector2>();
+                while(currentNode.pos != startNode.pos)
+                {
+                    path.Add(currentNode.pos);
+                    currentNode = currentNode.parent.Copy(tileArray);
+                }
+                path.Reverse();
+                return path;
             }
             else
             {
-                return new List<Node>();
+                return new List<Vector2>();
             }
         }
 
-        public static List<Node> retracePath (Node startNode, Node endNode)
+
+        /*
+        public static List<Node> retracePath (Node startNode, Node endNode, Tile[,] tileArray)
         {
             List<Node> path = new List<Node> ();
-            Node currentNode = endNode;
+            Node currentNode = endNode.Copy(tileArray);
 
             while (currentNode.pos != startNode.pos)
             {
-                path.Add(currentNode);
-                currentNode = currentNode.parent;
+                path.Add(currentNode.Copy(tileArray));
+                currentNode = currentNode.parent.Copy(tileArray);
             }
             path.Reverse();
 
             return path;
+        }
+        */
+
+        public static void deleteNodeOnList(Node n, List<Node> nodeList)
+        {
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+                if (nodeList[i].pos == n.pos)
+                {
+                    nodeList.RemoveAt(i);
+                    break;
+                }
+            }
         }
 
         public static bool isNodeInsideList(Node n, List<Node> nodeList)

@@ -14,6 +14,11 @@ namespace Pacman
         public int hCost;
 
         public Node parent;
+
+        public void setParent(Node parent)
+        {
+            this.parent = parent;
+        }
         
         public int fCost {
             get {
@@ -46,6 +51,20 @@ namespace Pacman
                 }
             }
 
+        }
+
+        public Node Copy(Tile[,] tileArray)
+        {
+            Node node = new Node(pos, tileArray);
+
+            node.hCost = hCost;
+            node.gCost = gCost;
+            if (parent != null)
+            {
+                node.setParent(parent.Copy(tileArray));
+            }
+
+            return node;
         }
 
         public List<Node> getNeighbours(Tile[,] tileArray)
