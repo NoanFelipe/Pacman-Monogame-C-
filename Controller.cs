@@ -62,7 +62,7 @@ namespace Pacman
         }
 
 
-        public void createGrid()
+        public void createGrid() // creates grid that contains Tile objects, which represent 24x24 pixels squares in the game, all with types such as walls, snacks and etc.
         {
             for (int y = 0; y < numberOfTilesY; y++)
             {
@@ -131,19 +131,20 @@ namespace Pacman
 
         public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Vector2> path)
         {
+            if (path == null) return;
             foreach (Vector2 gridPos in path)
             {
                 Vector2 pos = tileArray[(int)gridPos.X, (int)gridPos.Y].Position;
-                spriteBatch.Draw(Game1.playerDebugLineX, pos, Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineY, pos, Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineX, new Vector2(pos.X, pos.Y + 24), Color.White);
-                spriteBatch.Draw(Game1.playerDebugLineY, new Vector2(pos.X + 24, pos.Y), Color.White);
+                spriteBatch.Draw(Game1.pathfindingDebugLineX, pos, Color.White);
+                spriteBatch.Draw(Game1.pathfindingDebugLineY, pos, Color.White);
+                spriteBatch.Draw(Game1.pathfindingDebugLineX, new Vector2(pos.X, pos.Y + 24), Color.White);
+                spriteBatch.Draw(Game1.pathfindingDebugLineY, new Vector2(pos.X + 24, pos.Y), Color.White);
             }
         }
 
-        public bool isNextTileAvailable(Dir dir, int[] tile)
+        public bool isNextTileAvailable(Dir dir, Vector2 tile)
         { // tile != new int[2] {0, 14} && tile != new int[2] {numberOfTilesX-1 ,14}
-            if (tile.SequenceEqual(new int[2] { 0, 14 }) || tile.SequenceEqual(new int[2] { numberOfTilesX - 1 ,14}))
+            if (tile.Equals(new Vector2( 0, 14 )) || tile.Equals(new Vector2(numberOfTilesX - 1 ,14)))
             {
                 if (dir == Dir.Right || dir == Dir.Left)
                 {
@@ -159,25 +160,25 @@ namespace Pacman
                 switch (dir)
                 {
                     case Dir.Right:
-                        if (tileArray[tile[0] + 1, tile[1]].tileType == Tile.TileType.Wall || tileArray[tile[0] + 1, tile[1]].tileType == Tile.TileType.GhostHouse)
+                        if (tileArray[(int)tile.X + 1, (int)tile.Y].tileType == Tile.TileType.Wall || tileArray[(int)tile.X + 1, (int)tile.Y].tileType == Tile.TileType.GhostHouse)
                         {
                             return false;
                         }
                         break;
                     case Dir.Left:
-                        if (tileArray[tile[0] - 1, tile[1]].tileType == Tile.TileType.Wall || tileArray[tile[0] - 1, tile[1]].tileType == Tile.TileType.GhostHouse)
+                        if (tileArray[(int)tile.X - 1, (int)tile.Y].tileType == Tile.TileType.Wall || tileArray[(int)tile.X - 1, (int)tile.Y].tileType == Tile.TileType.GhostHouse)
                         {
                             return false;
                         }
                         break;
                     case Dir.Down:
-                        if (tileArray[tile[0], tile[1] + 1].tileType == Tile.TileType.Wall || tileArray[tile[0], tile[1] + 1].tileType == Tile.TileType.GhostHouse)
+                        if (tileArray[(int)tile.X, (int)tile.Y + 1].tileType == Tile.TileType.Wall || tileArray[(int)tile.X, (int)tile.Y + 1].tileType == Tile.TileType.GhostHouse)
                         {
                             return false;
                         }
                         break;
                     case Dir.Up:
-                        if (tileArray[tile[0], tile[1] - 1].tileType == Tile.TileType.Wall || tileArray[tile[0], tile[1] - 1].tileType == Tile.TileType.GhostHouse)
+                        if (tileArray[(int)tile.X, (int)tile.Y - 1].tileType == Tile.TileType.Wall || tileArray[(int)tile.X, (int)tile.Y - 1].tileType == Tile.TileType.GhostHouse)
                         {
                             return false;
                         }
@@ -201,10 +202,10 @@ namespace Pacman
             return listPosition;
         }
 
-        public bool checkTileType(int[] gridIndex, Tile.TileType tileType)
+        public bool checkTileType(Vector2 gridIndex, Tile.TileType tileType)
         {
             bool tile = false;
-            if (tileArray[gridIndex[0],gridIndex[1]].tileType == tileType)
+            if (tileArray[(int)gridIndex.X, (int)gridIndex.Y].tileType == tileType)
             {
                 tile = true;
             }

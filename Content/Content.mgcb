@@ -163,6 +163,30 @@
 /processorParam:TextureFormat=Color
 /build:SpriteSheets/GeneralSprites2.png
 
+#begin SpriteSheets/pathfindingDebugLineX.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteSheets/pathfindingDebugLineX.png
+
+#begin SpriteSheets/pathfindingDebugLineY.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteSheets/pathfindingDebugLineY.png
+
 #begin SpriteSheets/playerDebugLineX.png
 /importer:TextureImporter
 /processor:TextureProcessor

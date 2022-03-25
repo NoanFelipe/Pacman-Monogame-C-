@@ -11,7 +11,7 @@ namespace Pacman
 {
     public class Player
     {
-        private Vector2 gridPosition;
+        private Vector2 position;
         private Dir direction = Dir.Right;
         private Dir nextDirection = Dir.None;
         private int speed = 150;
@@ -26,17 +26,17 @@ namespace Pacman
         float canMoveTimer = 0;
         float TimerThreshold = 0.2f;
 
-        int[] previousTile;
-        int[] currentTile;
+        Vector2 previousTile;
+        Vector2 currentTile;
 
         private SpriteAnimation playerAnim;
 
         public Player(int tileX, int tileY, Tile[,] tileArray)
         {
-            gridPosition = tileArray[tileX, tileY].Position;
-            gridPosition.X += 14;
-            currentTile = new int[2] { tileX , tileY };
-            previousTile = new int[2] { tileX - 1, tileY };
+            position = tileArray[tileX, tileY].Position;
+            position.X += 14;
+            currentTile = new Vector2(tileX , tileY);
+            previousTile = new Vector2(tileX - 1, tileY);
 
             rectsDown[0] = new Rectangle(1371, 147, 39, 39);
             rectsDown[1] = new Rectangle(1419, 147, 39, 39);
@@ -54,32 +54,32 @@ namespace Pacman
             rectsRight[1] = new Rectangle(1419, 3, 39, 39);
             rectsRight[2] = lastRect;
 
-            playerAnim = new SpriteAnimation(0.08f, rectsRight);
+            playerAnim = new SpriteAnimation(0.08f, rectsRight, 2);
         }
 
         public Vector2 CurrentTile
         {
-            get { return new Vector2(currentTile[0], currentTile[1]); }
+            get { return currentTile; }
         }
 
         public Vector2 PreviousTile
         {
-            get { return new Vector2(previousTile[0], previousTile[1]); }
+            get { return previousTile; }
         }
 
-        public Vector2 GridPosition
+        public Vector2 Position
         {
-            get { return gridPosition; }
+            get { return position; }
         }
 
         public void setX(float newX)
         {
-            gridPosition.X = newX;
+            position.X = newX;
         }
 
         public void setY(float newY)
         {
-            gridPosition.Y = newY;
+            position.Y = newY;
         }
 
         public void Update(GameTime gameTime, Tile[,] tileArray)
@@ -123,7 +123,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.Y = tileArray[currentTile[0], currentTile[1]].Position.Y;
+                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -132,7 +132,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.Y = tileArray[currentTile[0], currentTile[1]].Position.Y;
+                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -141,7 +141,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X+2;
+                            position.X = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X+2;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -150,7 +150,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            gridPosition.X = tileArray[currentTile[0], currentTile[1]].Position.X+2;
+                            position.X = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X+2;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -165,33 +165,33 @@ namespace Pacman
                 case Dir.Right:
                     if (Game1.gameController.isNextTileAvailable(Dir.Right, currentTile))
                     {
-                        gridPosition.X += speed * dt;
+                        position.X += speed * dt;
                         playerAnim.setSourceRects(rectsRight);
                     }
                     break;
                 case Dir.Left:
                     if (Game1.gameController.isNextTileAvailable(Dir.Left, currentTile))
                     { 
-                        gridPosition.X -= speed * dt;
+                        position.X -= speed * dt;
                         playerAnim.setSourceRects(rectsLeft);
                     }
                     break;
                 case Dir.Down:
                     if (Game1.gameController.isNextTileAvailable(Dir.Down, currentTile))
                     {
-                        gridPosition.Y += speed * dt;
+                        position.Y += speed * dt;
                         playerAnim.setSourceRects(rectsDown);
                     }
                     break;
                 case Dir.Up:
                     if (Game1.gameController.isNextTileAvailable(Dir.Up, currentTile))
                     {
-                        gridPosition.Y -= speed * dt;
+                        position.Y -= speed * dt;
                         playerAnim.setSourceRects(rectsUp);
                     }
                     break;
                 case Dir.None:
-                    gridPosition = tileArray[currentTile[0], currentTile[1]].Position;
+                    position = tileArray[(int)currentTile.X, (int)currentTile.Y].Position;
                     break;
             }
         }
@@ -204,20 +204,20 @@ namespace Pacman
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet)
         {
-            playerAnim.Draw(spriteBatch, spriteSheet, new Vector2(gridPosition.X - radiusOffSet / 2, gridPosition.Y - radiusOffSet / 2 + 1));
+            playerAnim.Draw(spriteBatch, spriteSheet, new Vector2(position.X - radiusOffSet / 2, position.Y - radiusOffSet / 2 + 1));
         }
 
         public int checkForTeleportPos(Tile[,] tileArray)
         {
-            if (currentTile.SequenceEqual(new int[2] { 0, 14 }))
+            if (new int[2] {(int)currentTile.X, (int)currentTile.Y}.SequenceEqual(new int[2] { 0, 14 }))
             {
-                if (gridPosition.X < -30)
+                if (position.X < -30)
                 {
                     return 1;
                 }
-            }else if (currentTile.SequenceEqual(new int[2] { Controller.numberOfTilesX - 1, 14 }))
+            }else if (new int[2] { (int)currentTile.X, (int)currentTile.Y }.SequenceEqual(new int[2] { Controller.numberOfTilesX - 1, 14 }))
             {
-                if (gridPosition.X > tileArray[currentTile[0], currentTile[1]].Position.X + 30)
+                if (position.X > tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X + 30)
                 {
                     return 2;
                 }
@@ -225,34 +225,34 @@ namespace Pacman
             return 0;
         }
 
-        public void teleport(Vector2 pos, int[] tilePos)
+        public void teleport(Vector2 pos, Vector2 tilePos)
         {
-            gridPosition = pos;
+            position = pos;
             previousTile = currentTile;
             currentTile = tilePos;
         }
 
         public void updatePlayerTilePosition(Tile[,] tileArray)
         {
-            tileArray[previousTile[0], previousTile[1]].tileType = Tile.TileType.None;
-            tileArray[currentTile[0], currentTile[1]].tileType = Tile.TileType.Player;
+            tileArray[(int)previousTile.X, (int)previousTile.Y].tileType = Tile.TileType.None;
+            tileArray[(int)currentTile.X, (int)currentTile.Y].tileType = Tile.TileType.Player;
 
             if (checkForTeleportPos(tileArray) == 1)
             {
                 if (direction == Dir.Left)
-                    teleport(new Vector2(Game1.windowWidth + 30, gridPosition.Y), new int[2] { Controller.numberOfTilesX - 1, 14 });
+                    teleport(new Vector2(Game1.windowWidth + 30, position.Y), new Vector2( Controller.numberOfTilesX - 1, 14 ));
             }
             else if (checkForTeleportPos(tileArray) == 2)
             {
                 if (direction == Dir.Right)
-                    teleport(new Vector2(-30, gridPosition.Y), new int[2] { 0 , 14 });
+                    teleport(new Vector2(-30, position.Y), new Vector2( 0 , 14 ));
             }
 
             for (int x = 0; x < tileArray.GetLength(0); x++)
             {
                 for (int y = 0; y < tileArray.GetLength(1); y++)
                 {
-                    if (Game1.gameController.checkTileType(new int[] { x, y }, Tile.TileType.Player))
+                    if (Game1.gameController.checkTileType(new Vector2(x,y), Tile.TileType.Player))
                     {
                         int snackListPos = Game1.gameController.findSnackListPosition(tileArray[x,y].Position);
                         if (snackListPos != -1)
@@ -288,8 +288,8 @@ namespace Pacman
                             break;
                     }
 
-                    float pacmanPosX = gridPosition.X + pacmanPosOffSetX;
-                    float pacmanPosY = gridPosition.Y + pacmanPosOffSetY;
+                    float pacmanPosX = position.X + pacmanPosOffSetX;
+                    float pacmanPosY = position.Y + pacmanPosOffSetY;
 
                     if (direction == Dir.Right || direction == Dir.Down)
                     {
@@ -298,7 +298,7 @@ namespace Pacman
                             if (pacmanPosY >= tilePosY && pacmanPosY < nextTilePosY)
                             {
                                 previousTile = currentTile;
-                                currentTile = new int[2] { x, y };
+                                currentTile = new Vector2( x, y );
                             }
                         }
                     }else if (direction == Dir.Left)
@@ -308,7 +308,7 @@ namespace Pacman
                             if (pacmanPosY >= tilePosY && pacmanPosY < nextTilePosY)
                             {
                                 previousTile = currentTile;
-                                currentTile = new int[2] { x, y };
+                                currentTile = new Vector2(x, y);
                             }
                         }
                     }else if (direction == Dir.Up)
@@ -318,7 +318,7 @@ namespace Pacman
                             if (pacmanPosY <= tilePosY && pacmanPosY > nextTilePosY)
                             {
                                 previousTile = currentTile;
-                                currentTile = new int[2] { x, y };
+                                currentTile = new Vector2(x, y);
                             }
                         }
                     }
@@ -328,7 +328,7 @@ namespace Pacman
 
         public void debugPacmanPosition(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Game1.debuggingDot, gridPosition, Color.White);
+            spriteBatch.Draw(Game1.debuggingDot, position, Color.White);
         }
     }
 }

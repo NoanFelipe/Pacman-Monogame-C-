@@ -13,12 +13,19 @@ namespace Pacman
         private float timer = 0;
         private float threshold;
         private Rectangle[] sourceRectangles;
-        private int animationIndex = 2;
+        private int animationIndex = 0;
 
         public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles)
         {
             threshold = newThreshold;
             sourceRectangles = newSourceRectangles;
+        }
+
+        public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles, int startingAnimIndex)
+        {
+            threshold = newThreshold;
+            sourceRectangles = newSourceRectangles;
+            animationIndex = startingAnimIndex;
         }
 
         public void setSourceRects(Rectangle[] newSourceRects)

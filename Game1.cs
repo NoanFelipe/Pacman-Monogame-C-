@@ -33,6 +33,8 @@ namespace Pacman
         public static Texture2D debugLineY;
         public static Texture2D playerDebugLineX;
         public static Texture2D playerDebugLineY;
+        public static Texture2D pathfindingDebugLineX;
+        public static Texture2D pathfindingDebugLineY;
 
         public static SpriteSheet spriteSheet1;
         public static SpriteSheet spriteSheet2;
@@ -52,7 +54,7 @@ namespace Pacman
 
         public static int score;
 
-        private List<Vector2> testPath;
+        private Enemy testEnemy;
 
         public Game1()
         {
@@ -97,6 +99,8 @@ namespace Pacman
             debugLineY = Content.Load<Texture2D>("SpriteSheets/debugLineY");
             playerDebugLineX = Content.Load<Texture2D>("SpriteSheets/playerDebugLineX");
             playerDebugLineY = Content.Load<Texture2D>("SpriteSheets/playerDebugLineY");
+            pathfindingDebugLineX = Content.Load<Texture2D>("SpriteSheets/pathfindingDebugLineX");
+            pathfindingDebugLineY = Content.Load<Texture2D>("SpriteSheets/pathfindingDebugLineY");
             spriteSheet1 = new SpriteSheet(GeneralSprites1);
             spriteSheet2 = new SpriteSheet(GeneralSprites2);
 
@@ -111,7 +115,7 @@ namespace Pacman
             MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
 
-            testPath = new List<Vector2>();
+            testEnemy = new Enemy(14,14, gameController.tileArray);
         }
 
         protected override void Update(GameTime gameTime)
@@ -121,16 +125,17 @@ namespace Pacman
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (gameStartSongLength > gameStartTimer)
+            // checks if starting song finished, if false returns
+            if (gameStartSongLength > gameStartTimer) 
             {
                 gameStartTimer += dt;
+                base.Update(gameTime);
+                return;
             }
-            else // add update stuff here
-            {
-                Pacman.updatePlayerTilePosition(gameController.tileArray); 
-                Pacman.Update(gameTime, gameController.tileArray);
-                testPath = Pathfinding.findPath(new Vector2(1,1), Pacman.CurrentTile, gameController.tileArray);
-            }
+
+            Pacman.updatePlayerTilePosition(gameController.tileArray); 
+            Pacman.Update(gameTime, gameController.tileArray);
+            testEnemy.Update(gameTime, gameController.tileArray, Pacman.CurrentTile);
 
             base.Update(gameTime);
         }
@@ -141,18 +146,19 @@ namespace Pacman
 
             _spriteBatch.Begin();
 
-            spriteSheet1.drawSprite(_spriteBatch, backgroundRect, new Vector2(0,scoreOffSet)); // Draw background
+            spriteSheet1.drawSprite(_spriteBatch, backgroundRect, new Vector2(0,scoreOffSet)); 
             text.draw(_spriteBatch, "score - " + score, new Vector2(3,3), 24);
             foreach (Snack snack in gameController.snackList)
             {
                 snack.Draw(_spriteBatch);
             }
             Pacman.Draw(_spriteBatch, spriteSheet1);
+            testEnemy.Draw(_spriteBatch, spriteSheet1);
 
             //gameController.drawGridDebugger(_spriteBatch);
+            gameController.drawPathFindingDebugger(_spriteBatch, testEnemy.PathToPacMan); 
             //gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);
-            gameController.drawPathFindingDebugger(_spriteBatch, testPath);
 
             _spriteBatch.End();
 

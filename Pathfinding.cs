@@ -65,7 +65,6 @@ namespace Pacman
 
             if (foundPath)
             {
-                //return retracePath(currentNode.Copy(tileArray), endNode.Copy(tileArray), tileArray);
                 List<Vector2> path = new List<Vector2>();
                 while(currentNode.pos != startNode.pos)
                 {
@@ -80,24 +79,6 @@ namespace Pacman
                 return new List<Vector2>();
             }
         }
-
-
-        /*
-        public static List<Node> retracePath (Node startNode, Node endNode, Tile[,] tileArray)
-        {
-            List<Node> path = new List<Node> ();
-            Node currentNode = endNode.Copy(tileArray);
-
-            while (currentNode.pos != startNode.pos)
-            {
-                path.Add(currentNode.Copy(tileArray));
-                currentNode = currentNode.parent.Copy(tileArray);
-            }
-            path.Reverse();
-
-            return path;
-        }
-        */
 
         public static void deleteNodeOnList(Node n, List<Node> nodeList)
         {
