@@ -97,19 +97,19 @@ namespace Pacman
             }
             playerAnim.Update(gameTime);
 
-            if (kState.IsKeyDown(Keys.D) && direction != Dir.Left && playerAnim.SourceRectangles != rectsLeft)
+            if (kState.IsKeyDown(Keys.D))
             {
                 nextDirection = Dir.Right;
             }
-            if (kState.IsKeyDown(Keys.A) && direction != Dir.Right && playerAnim.SourceRectangles != rectsRight)
+            if (kState.IsKeyDown(Keys.A))
             {
                 nextDirection = Dir.Left;
             }
-            if (kState.IsKeyDown(Keys.W) && direction != Dir.Down && playerAnim.SourceRectangles != rectsDown)
+            if (kState.IsKeyDown(Keys.W))
             {
                 nextDirection = Dir.Up;
             }
-            if (kState.IsKeyDown(Keys.S) && direction != Dir.Up && playerAnim.SourceRectangles != rectsUp)
+            if (kState.IsKeyDown(Keys.S))
             {
                 nextDirection = Dir.Down;
             }

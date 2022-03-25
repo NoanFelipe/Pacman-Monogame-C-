@@ -10,7 +10,7 @@ namespace Pacman
 {
     public class Pathfinding
     {
-        public static List<Vector2> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray)
+        public static List<Vector2> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray, Dir direction)
         {
             List<Node> openList = new List<Node>();
             List<Node> closedList = new List<Node>();

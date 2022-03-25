@@ -75,7 +75,7 @@ namespace Pacman
 
         public void decideDirection(Vector2 playerTilePos, Tile[,] tileArray)
         {
-            pathToPacMan = Pathfinding.findPath(currentTile, playerTilePos, tileArray);
+            pathToPacMan = Pathfinding.findPath(currentTile, playerTilePos, tileArray, direction);
             if (pathToPacMan.Count == 0) return;
 
             if (pathToPacMan[0].X > currentTile.X)
