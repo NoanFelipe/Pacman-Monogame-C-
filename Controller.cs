@@ -61,7 +61,6 @@ namespace Pacman
             tileArray = new Tile[numberOfTilesX, numberOfTilesY];
         }
 
-
         public void createGrid() // creates grid that contains Tile objects, which represent 24x24 pixels squares in the game, all with types such as walls, snacks and etc.
         {
             for (int y = 0; y < numberOfTilesY; y++)
@@ -111,6 +110,23 @@ namespace Pacman
                 }
             }
         }
+
+        public static void drawGhosts(Inky i, Blinky b, Pinky p, Clyde c, SpriteBatch spriteBatch, SpriteSheet spriteSheet)
+        {
+            i.Draw(spriteBatch, spriteSheet);
+            b.Draw(spriteBatch, spriteSheet);
+            p.Draw(spriteBatch, spriteSheet);
+            c.Draw(spriteBatch, spriteSheet);
+        }
+
+        public static void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Tile[,] tileArray, Vector2 playerTilePos)
+        {
+            i.Update(gameTime, tileArray, playerTilePos);
+            b.Update(gameTime, tileArray, playerTilePos);
+            p.Update(gameTime, tileArray, playerTilePos);
+            c.Update(gameTime, tileArray, playerTilePos);
+        }
+
         public void drawPacmanGridDebugger(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < numberOfTilesX; x++)
@@ -127,6 +143,11 @@ namespace Pacman
                     }
                 }
             }
+        }
+
+        public void gameOver()
+        {
+
         }
 
         public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Vector2> path)

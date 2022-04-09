@@ -123,7 +123,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
+                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y+1;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -132,7 +132,7 @@ namespace Pacman
                         {
                             canMove = false;
                             direction = nextDirection;
-                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
+                            position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y+1;
                             nextDirection = Dir.None;
                         }
                         break;
@@ -191,7 +191,8 @@ namespace Pacman
                     }
                     break;
                 case Dir.None:
-                    position = tileArray[(int)currentTile.X, (int)currentTile.Y].Position;
+                    Vector2 p = tileArray[(int)currentTile.X, (int)currentTile.Y].Position;
+                    position = new Vector2(p.X+2, p.Y+1);
                     break;
             }
         }

@@ -50,11 +50,14 @@ namespace Pacman
 
         Rectangle backgroundRect = new Rectangle(684,0,672,744);
 
+        Inky inky;
+        Blinky blinky;
+        Clyde clyde;
+        Pinky pinky;
+
         Player Pacman;
 
         public static int score;
-
-        private Enemy testEnemy;
 
         public Game1()
         {
@@ -109,13 +112,15 @@ namespace Pacman
             gameController = new Controller();
             gameController.createGrid();
 
-            score = 0;
+            inky = new Inky(11, 14, gameController.tileArray);
+            blinky = new Blinky(13, 11, gameController.tileArray);
+            pinky = new Pinky(13, 14, gameController.tileArray);
+            clyde = new Clyde(15, 14, gameController.tileArray);
+
             Pacman = new Player(13, 23, gameController.tileArray);
 
             MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
-
-            testEnemy = new Enemy(14,14, gameController.tileArray);
         }
 
         protected override void Update(GameTime gameTime)
@@ -135,7 +140,7 @@ namespace Pacman
 
             Pacman.updatePlayerTilePosition(gameController.tileArray); 
             Pacman.Update(gameTime, gameController.tileArray);
-            testEnemy.Update(gameTime, gameController.tileArray, Pacman.CurrentTile);
+            Controller.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController.tileArray, Pacman.CurrentTile);
 
             base.Update(gameTime);
         }
@@ -153,10 +158,10 @@ namespace Pacman
                 snack.Draw(_spriteBatch);
             }
             Pacman.Draw(_spriteBatch, spriteSheet1);
-            testEnemy.Draw(_spriteBatch, spriteSheet1);
+            Controller.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
 
-            //gameController.drawGridDebugger(_spriteBatch);
-            gameController.drawPathFindingDebugger(_spriteBatch, testEnemy.PathToPacMan); 
+            gameController.drawGridDebugger(_spriteBatch);
+            //gameController.drawPathFindingDebugger(_spriteBatch, ); 
             //gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);
 

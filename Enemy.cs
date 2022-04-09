@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,17 +9,19 @@ namespace Pacman
 {
     public class Enemy
     {
-        private Vector2 position;
+        protected Vector2 position;
         public Vector2 Position
         {
             get { return position; }
         }
 
-        private Vector2 currentTile;
-        private Vector2 previousTile;
-        private Tile.TileType previousTileType;
-        private Dir direction;
-        private List<Vector2> pathToPacMan;
+        protected Vector2 currentTile;
+        protected Vector2 previousTile;
+        protected Tile.TileType previousTileType;
+        protected Dir direction;
+
+        protected List<Vector2> pathToPacMan;
+        protected Vector2 foundpathTile;
 
         public List<Vector2> PathToPacMan
         {
@@ -27,15 +30,15 @@ namespace Pacman
 
         private int speed = 150;
 
-        private Rectangle[] rectsDown = new Rectangle[2];
-        private Rectangle[] rectsUp = new Rectangle[2];
-        private Rectangle[] rectsLeft = new Rectangle[2];
-        private Rectangle[] rectsRight = new Rectangle[2];
+        protected Rectangle[] rectsDown = new Rectangle[2];
+        protected Rectangle[] rectsUp = new Rectangle[2];
+        protected Rectangle[] rectsLeft = new Rectangle[2];
+        protected Rectangle[] rectsRight = new Rectangle[2];
 
-        private int drawOffSetX = -9;
-        private int drawOffSetY = -9;
+        protected int drawOffSetX = -9;
+        protected int drawOffSetY = -9;
 
-        private SpriteAnimation enemyAnim;
+        protected SpriteAnimation enemyAnim;
 
         public Enemy(int tileX, int tileY, Tile[,] tileArray)
         {
@@ -44,19 +47,9 @@ namespace Pacman
             previousTile = new Vector2(-1,-1);
             direction = Dir.None;
 
-            rectsDown[0] = new Rectangle(1659, 291, 42, 42);
-            rectsDown[1] = new Rectangle(1707, 291, 42, 42);
+            enemyAnim = new SpriteAnimation(0.08f, rectsUp);
 
-            rectsUp[0] = new Rectangle(1563, 291, 42, 42);
-            rectsUp[1] = new Rectangle(1611, 291, 42, 42);
-
-            rectsLeft[0] = new Rectangle(1467, 291, 42, 42);
-            rectsLeft[1] = new Rectangle(1515, 291, 42, 42);
-
-            rectsRight[0] = new Rectangle(1371, 291, 42, 42);
-            rectsRight[1] = new Rectangle(1419, 291, 42, 42);
-
-            enemyAnim = new SpriteAnimation(0.08f, rectsRight);
+            position.X += 12;
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet)
@@ -75,8 +68,13 @@ namespace Pacman
 
         public void decideDirection(Vector2 playerTilePos, Tile[,] tileArray)
         {
-            pathToPacMan = Pathfinding.findPath(currentTile, playerTilePos, tileArray, direction);
-            if (pathToPacMan.Count == 0) return;
+            if (!foundpathTile.Equals(currentTile))
+            { 
+                pathToPacMan = Pathfinding.findPath(currentTile, playerTilePos, tileArray, direction);
+                foundpathTile = currentTile;
+            }
+
+            if (pathToPacMan.Count == 0) { return; }
 
             if (pathToPacMan[0].X > currentTile.X)
             {
@@ -131,11 +129,45 @@ namespace Pacman
             }
         }
 
+        public int checkForTeleportPos(Tile[,] tileArray)
+        {
+            if (new int[2] { (int)currentTile.X, (int)currentTile.Y }.SequenceEqual(new int[2] { 0, 14 }))
+            {
+                if (position.X < -30)
+                {
+                    return 1;
+                }
+            }
+            else if (new int[2] { (int)currentTile.X, (int)currentTile.Y }.SequenceEqual(new int[2] { Controller.numberOfTilesX - 1, 14 }))
+            {
+                if (position.X > tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X + 30)
+                {
+                    return 2;
+                }
+            }
+            return 0;
+        }
+
+        public void teleport(Vector2 pos, Vector2 tilePos)
+        {
+            position = pos;
+            previousTile = currentTile;
+            currentTile = tilePos;
+        }
+
         public void updateTilePosition(Tile[,] tileArray)
         {
-            if (!previousTile.Equals(new Vector2(-1,-1)))
-                tileArray[(int)previousTile.X, (int)previousTile.Y].tileType = previousTileType;
-            tileArray[(int)currentTile.X, (int)currentTile.Y].tileType = Tile.TileType.Player;
+
+            if (checkForTeleportPos(tileArray) == 1)
+            {
+                if (direction == Dir.Left)
+                    teleport(new Vector2(Game1.windowWidth + 30, position.Y), new Vector2(Controller.numberOfTilesX - 1, 14));
+            }
+            else if (checkForTeleportPos(tileArray) == 2)
+            {
+                if (direction == Dir.Right)
+                    teleport(new Vector2(-30, position.Y), new Vector2(0, 14));
+            }
 
             for (int x = 0; x < tileArray.GetLength(0); x++)
             {
@@ -178,7 +210,10 @@ namespace Pacman
                             if (posY >= tilePosY && posY < nextTilePosY)
                             {
                                 previousTile = currentTile;
+                                tileArray[(int)previousTile.X, (int)previousTile.Y].tileType = previousTileType;
                                 currentTile = new Vector2(x, y);
+                                previousTileType = tileArray[(int)currentTile.X, (int)currentTile.Y].tileType;
+                                tileArray[(int)currentTile.X, (int)currentTile.Y].tileType = Tile.TileType.Ghost;
                             }
                         }
                     }
@@ -189,8 +224,10 @@ namespace Pacman
                             if (posY >= tilePosY && posY < nextTilePosY)
                             {
                                 previousTile = currentTile;
-                                previousTileType = tileArray[(int)previousTile.X, (int)previousTile.Y].tileType;
+                                tileArray[(int)previousTile.X, (int)previousTile.Y].tileType = previousTileType;
                                 currentTile = new Vector2(x, y);
+                                previousTileType = tileArray[(int)currentTile.X, (int)currentTile.Y].tileType;
+                                tileArray[(int)currentTile.X, (int)currentTile.Y].tileType = Tile.TileType.Ghost;
                             }
                         }
                     }
@@ -201,7 +238,10 @@ namespace Pacman
                             if (posY <= tilePosY && posY > nextTilePosY)
                             {
                                 previousTile = currentTile;
+                                tileArray[(int)previousTile.X, (int)previousTile.Y].tileType = previousTileType;
                                 currentTile = new Vector2(x, y);
+                                previousTileType = tileArray[(int)currentTile.X, (int)currentTile.Y].tileType;
+                                tileArray[(int)currentTile.X, (int)currentTile.Y].tileType = Tile.TileType.Ghost;
                             }
                         }
                     }

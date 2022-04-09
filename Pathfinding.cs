@@ -10,18 +10,19 @@ namespace Pacman
 {
     public class Pathfinding
     {
-        public static List<Vector2> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray, Dir direction)
+        public static List<Vector2> findPath(Vector2 startPos, Vector2 endPos, Tile[,] tileArray, Dir currentDirection)
         {
             List<Node> openList = new List<Node>();
             List<Node> closedList = new List<Node>();
 
             Node startNode = new Node(startPos, tileArray);
             Node endNode = new Node(endPos, tileArray);
+            startNode.setIgnoreDirection(currentDirection);
             openList.Add(startNode.Copy(tileArray));
 
             bool foundPath = false;
             Node currentNode = openList[0].Copy(tileArray);
-            while (openList != null)
+            while (openList.Count > 0)
             {
                 currentNode = openList[0].Copy(tileArray);
                 for (int i = 1; i < openList.Count; i++)

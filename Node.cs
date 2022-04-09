@@ -14,6 +14,26 @@ namespace Pacman
         public int hCost;
 
         public Node parent;
+        public Dir ignoreDirection = Dir.None;
+
+        public void setIgnoreDirection(Dir currentDir)
+        {
+            switch (currentDir)
+            {
+                case Dir.Right:
+                    ignoreDirection = Dir.Left;
+                    break;
+                case Dir.Left:
+                    ignoreDirection = Dir.Right;
+                    break;
+                case Dir.Down:
+                    ignoreDirection = Dir.Up;
+                    break;
+                case Dir.Up:
+                    ignoreDirection = Dir.Down;
+                    break;
+            }
+        }
 
         public void setParent(Node parent)
         {
@@ -59,6 +79,7 @@ namespace Pacman
 
             node.hCost = hCost;
             node.gCost = gCost;
+            node.ignoreDirection = ignoreDirection;
             if (parent != null)
             {
                 node.setParent(parent.Copy(tileArray));
@@ -71,17 +92,29 @@ namespace Pacman
         {
             List<Node> neighbours = new List<Node>();
 
-            Node left = new Node(new Vector2(pos.X - 1, pos.Y), tileArray);
-            if (left.pos != new Vector2(-100, -100)) neighbours.Add(left);
+            if (ignoreDirection != Dir.Left)
+            { 
+                Node left = new Node(new Vector2(pos.X - 1, pos.Y), tileArray);
+                if (left.pos != new Vector2(-100, -100)) neighbours.Add(left);
+            }
 
-            Node right = new Node(new Vector2(pos.X + 1, pos.Y), tileArray);
-            if (right.pos != new Vector2(-100, -100)) neighbours.Add(right);
+            if (ignoreDirection != Dir.Right)
+            {
+                Node right = new Node(new Vector2(pos.X + 1, pos.Y), tileArray);
+                if (right.pos != new Vector2(-100, -100)) neighbours.Add(right);
+            }
 
-            Node up = new Node(new Vector2(pos.X, pos.Y -1), tileArray);
-            if (up.pos != new Vector2(-100, -100)) neighbours.Add(up);
+            if (ignoreDirection != Dir.Up)
+            {
+                Node up = new Node(new Vector2(pos.X, pos.Y - 1), tileArray);
+                if (up.pos != new Vector2(-100, -100)) neighbours.Add(up);
+            }
 
-            Node down = new Node(new Vector2(pos.X, pos.Y + 1), tileArray);
-            if (down.pos != new Vector2(-100, -100)) neighbours.Add(down);
+            if (ignoreDirection != Dir.Down)
+            {
+                Node down = new Node(new Vector2(pos.X, pos.Y + 1), tileArray);
+                if (down.pos != new Vector2(-100, -100)) neighbours.Add(down);
+            }
 
             return neighbours;
         }
