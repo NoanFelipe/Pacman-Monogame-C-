@@ -28,7 +28,7 @@ namespace Pacman
             get { return pathToPacMan; }
         }
 
-        private int speed = 150;
+        private int speed = 135;
 
         protected Rectangle[] rectsDown = new Rectangle[2];
         protected Rectangle[] rectsUp = new Rectangle[2];
@@ -39,6 +39,11 @@ namespace Pacman
         protected int drawOffSetY = -9;
 
         protected SpriteAnimation enemyAnim;
+
+        public SpriteAnimation EnemyAnim
+        {
+            get { return enemyAnim; }
+        }
 
         public Enemy(int tileX, int tileY, Tile[,] tileArray)
         {
@@ -66,15 +71,21 @@ namespace Pacman
             Move(gameTime, tileArray);
         }
 
+        // changes for each ghost, returns target position
+        public Vector2 getTargetPosition(Vector2 playerTilePos)
+        {
+            return playerTilePos;
+        }
+
         public void decideDirection(Vector2 playerTilePos, Tile[,] tileArray)
         {
             if (!foundpathTile.Equals(currentTile))
             { 
-                pathToPacMan = Pathfinding.findPath(currentTile, playerTilePos, tileArray, direction);
+                pathToPacMan = Pathfinding.findPath(currentTile, getTargetPosition(playerTilePos), tileArray, direction);
                 foundpathTile = currentTile;
             }
 
-            if (pathToPacMan.Count == 0) { return; }
+            if (pathToPacMan.Count == 0) { Controller.gameOver(); return; }
 
             if (pathToPacMan[0].X > currentTile.X)
             {

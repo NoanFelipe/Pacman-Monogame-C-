@@ -140,7 +140,7 @@ namespace Pacman
 
             Pacman.updatePlayerTilePosition(gameController.tileArray); 
             Pacman.Update(gameTime, gameController.tileArray);
-            Controller.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController.tileArray, Pacman.CurrentTile);
+            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController.tileArray, Pacman.CurrentTile);
 
             base.Update(gameTime);
         }
@@ -158,7 +158,7 @@ namespace Pacman
                 snack.Draw(_spriteBatch);
             }
             Pacman.Draw(_spriteBatch, spriteSheet1);
-            Controller.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
+            gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
 
             gameController.drawGridDebugger(_spriteBatch);
             //gameController.drawPathFindingDebugger(_spriteBatch, ); 

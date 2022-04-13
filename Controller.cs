@@ -52,6 +52,9 @@ namespace Pacman
         public Tile[,] tileArray;
         public List<Snack> snackList = new List<Snack>();
 
+        public float ghostTimer;
+        public float ghostTimerLength = 10f;
+
         public Controller()
         {
             numberOfTilesX = 28;
@@ -111,7 +114,7 @@ namespace Pacman
             }
         }
 
-        public static void drawGhosts(Inky i, Blinky b, Pinky p, Clyde c, SpriteBatch spriteBatch, SpriteSheet spriteSheet)
+        public void drawGhosts(Inky i, Blinky b, Pinky p, Clyde c, SpriteBatch spriteBatch, SpriteSheet spriteSheet)
         {
             i.Draw(spriteBatch, spriteSheet);
             b.Draw(spriteBatch, spriteSheet);
@@ -119,12 +122,26 @@ namespace Pacman
             c.Draw(spriteBatch, spriteSheet);
         }
 
-        public static void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Tile[,] tileArray, Vector2 playerTilePos)
+        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Tile[,] tileArray, Vector2 playerTilePos)
         {
-            i.Update(gameTime, tileArray, playerTilePos);
-            b.Update(gameTime, tileArray, playerTilePos);
+            if (ghostTimer < ghostTimerLength)
+            {
+                ghostTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                c.EnemyAnim.Update(gameTime);
+                i.EnemyAnim.Update(gameTime);
+            }
+            if (ghostTimer > ghostTimerLength / 2 && ghostTimer < ghostTimerLength)
+            {
+                i.Update(gameTime, tileArray, playerTilePos);
+            }
+            else if (ghostTimer > ghostTimerLength)
+            {
+                c.Update(gameTime, tileArray, playerTilePos);
+                i.Update(gameTime, tileArray, playerTilePos);
+            }
+
             p.Update(gameTime, tileArray, playerTilePos);
-            c.Update(gameTime, tileArray, playerTilePos);
+            b.Update(gameTime, tileArray, playerTilePos);
         }
 
         public void drawPacmanGridDebugger(SpriteBatch spriteBatch)
@@ -145,7 +162,8 @@ namespace Pacman
             }
         }
 
-        public void gameOver()
+        // calling this function on Enemy update (if path to pacman is equal to 0)
+        public static void gameOver()
         {
 
         }
