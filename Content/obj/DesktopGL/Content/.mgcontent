@@ -4,31 +4,31 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/credit.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/death_1.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/death_2.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/eat_fruit.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/eat_ghost.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/extend.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/game_start.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/intermission.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/munch.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/retreating.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/siren_1.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/siren_2.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/siren_3.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/siren_4.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/Sounds/siren_5.wav</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/debuggingDot.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/debugLineX.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/debugLineY.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/GeneralSprites1.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/GeneralSprites2.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/pathfindingDebugLineX.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/pathfindingDebugLineY.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/playerDebugLineX.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/playerDebugLineY.png</File>
-    <File>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/TextSprites.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/credit.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/death_1.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/death_2.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/eat_fruit.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/eat_ghost.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/extend.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/game_start.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/intermission.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/munch.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/retreating.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_1.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_2.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_3.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_4.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_5.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/debuggingDot.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/debugLineX.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/debugLineY.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/GeneralSprites1.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/GeneralSprites2.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/pathfindingDebugLineX.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/pathfindingDebugLineY.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/playerDebugLineX.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/playerDebugLineY.png</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/TextSprites.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

@@ -199,8 +199,8 @@ namespace Pacman
 
         public void eatSnack(int listPosition)
         {
+            Game1.score += Game1.gameController.snackList[listPosition].scoreGain;
             Game1.gameController.snackList.RemoveAt(listPosition);
-            Game1.score += 10;
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet)

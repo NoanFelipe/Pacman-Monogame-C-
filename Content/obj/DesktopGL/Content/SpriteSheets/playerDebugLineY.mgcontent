@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/SpriteSheets/playerDebugLineY.png</SourceFile>
-  <SourceTime>2022-04-11T18:25:39.974998-03:00</SourceTime>
-  <DestFile>C:/Users/QAT Employee/Desktop/Programming/Pacman Related Stuff/Pacman/Content/bin/DesktopGL/Content/SpriteSheets/playerDebugLineY.xnb</DestFile>
-  <DestTime>2022-04-11T18:26:00.9282486-03:00</DestTime>
+  <SourceFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/playerDebugLineY.png</SourceFile>
+  <SourceTime>2022-03-23T16:18:27.5946093-03:00</SourceTime>
+  <DestFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/Content/SpriteSheets/playerDebugLineY.xnb</DestFile>
+  <DestTime>2022-04-13T23:57:28.7503159-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T13:17:54-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

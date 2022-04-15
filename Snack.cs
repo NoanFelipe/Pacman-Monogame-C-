@@ -14,8 +14,10 @@ namespace Pacman
         private SnackType snackType;
         private Vector2 gridPosition;
         private int[] gridTile;
+        public int scoreGain;
         private Rectangle smallSnackRect = new Rectangle(33, 33, 6, 6);
-        private int radiusOffSet = 3;
+        private Rectangle bigSnackRect = new Rectangle(24, 72, 24, 24);
+        private int radiusOffSet;
 
         public Vector2 Position
         {
@@ -25,13 +27,27 @@ namespace Pacman
         public Snack(SnackType newSnackType, Vector2 newPosition, int[] newGridTile)
         {
             snackType = newSnackType;
+            if (newSnackType == SnackType.Big)
+            {
+                scoreGain = 50;
+                radiusOffSet = 12;
+            }
+            else
+            {
+                scoreGain = 10;
+                radiusOffSet = 3;
+            }
+                
             gridPosition = newPosition;
             gridTile = newGridTile;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Game1.spriteSheet1.drawSprite(spriteBatch, smallSnackRect, new Vector2(gridPosition.X + Controller.tileWidth/2 - radiusOffSet, gridPosition.Y + Controller.tileHeight/2 - radiusOffSet));
+            if (snackType == SnackType.Small)
+                Game1.spriteSheet1.drawSprite(spriteBatch, smallSnackRect, new Vector2(gridPosition.X + Controller.tileWidth/2 - radiusOffSet, gridPosition.Y + Controller.tileHeight/2 - radiusOffSet));
+            else
+                Game1.spriteSheet1.drawSprite(spriteBatch, bigSnackRect, new Vector2(gridPosition.X + Controller.tileWidth / 2 - radiusOffSet, gridPosition.Y + Controller.tileHeight / 2 - radiusOffSet));
         }
     }
 }
