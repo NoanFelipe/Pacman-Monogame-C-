@@ -24,5 +24,11 @@ namespace Pacman
             rectsRight[0] = new Rectangle(1371, 291, 42, 42);
             rectsRight[1] = new Rectangle(1419, 291, 42, 42);
         }
+
+        public override Vector2 getTargetPosition(Vector2 playerTilePos)
+        {
+            return new Vector2(25, 29);
+            //return playerTilePos;
+        }
     }
 }

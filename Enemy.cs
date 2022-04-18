@@ -13,7 +13,10 @@ namespace Pacman
         public Vector2 Position
         {
             get { return position; }
+            set { position = value; }
         }
+
+        public bool reset = false;
 
         protected Vector2 currentTile;
         protected Vector2 previousTile;
@@ -28,7 +31,7 @@ namespace Pacman
             get { return pathToPacMan; }
         }
 
-        private int speed = 135;
+        protected int speed = 135;
 
         protected Rectangle[] rectsDown = new Rectangle[2];
         protected Rectangle[] rectsUp = new Rectangle[2];
@@ -62,50 +65,51 @@ namespace Pacman
             enemyAnim.Draw(spriteBatch, spriteSheet, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
         }
 
-        public void Update(GameTime gameTime, Tile[,] tileArray, Vector2 playerTilePos)
+        public void Update(GameTime gameTime, Controller gameController, Vector2 playerTilePos)
         {
-            updateTilePosition(tileArray);
+            updateTilePosition(gameController.tileArray);
             enemyAnim.Update(gameTime);
 
-            decideDirection(playerTilePos, tileArray);
-            Move(gameTime, tileArray);
+            decideDirection(playerTilePos, gameController);
+            Move(gameTime, gameController.tileArray);
         }
 
         // changes for each ghost, returns target position
-        public Vector2 getTargetPosition(Vector2 playerTilePos)
+        public virtual Vector2 getTargetPosition(Vector2 playerTilePos)
         {
             return playerTilePos;
         }
 
-        public void decideDirection(Vector2 playerTilePos, Tile[,] tileArray)
+        public void decideDirection(Vector2 playerTilePos, Controller gameController)
         {
             if (!foundpathTile.Equals(currentTile))
             { 
-                pathToPacMan = Pathfinding.findPath(currentTile, getTargetPosition(playerTilePos), tileArray, direction);
+                pathToPacMan = Pathfinding.findPath(currentTile, getTargetPosition(playerTilePos), gameController.tileArray, direction);
                 foundpathTile = currentTile;
             }
 
-            if (pathToPacMan.Count == 0) { Controller.gameOver(); return; }
+            if (playerTilePos.Equals(currentTile)) { reset = true; return; }
+            if (pathToPacMan.Count == 0) { return; }
 
             if (pathToPacMan[0].X > currentTile.X)
             {
                 direction = Dir.Right;
-                position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
+                position.Y = gameController.tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
             }
             else if (pathToPacMan[0].X < currentTile.X)
             {
                 direction = Dir.Left;
-                position.Y = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
+                position.Y = gameController.tileArray[(int)currentTile.X, (int)currentTile.Y].Position.Y;
             }
             else if (pathToPacMan[0].Y > currentTile.Y)
             {
                 direction = Dir.Down;
-                position.X = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X;
+                position.X = gameController.tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X;
             }
             else if (pathToPacMan[0].Y < currentTile.Y)
             {
                 direction = Dir.Up;
-                position.X = tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X;
+                position.X = gameController.tileArray[(int)currentTile.X, (int)currentTile.Y].Position.X;
             }
         }
 

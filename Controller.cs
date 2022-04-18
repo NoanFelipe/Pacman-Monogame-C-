@@ -122,7 +122,7 @@ namespace Pacman
             c.Draw(spriteBatch, spriteSheet);
         }
 
-        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Tile[,] tileArray, Vector2 playerTilePos)
+        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos)
         {
             if (ghostTimer < ghostTimerLength)
             {
@@ -132,16 +132,25 @@ namespace Pacman
             }
             if (ghostTimer > ghostTimerLength / 2 && ghostTimer < ghostTimerLength)
             {
-                i.Update(gameTime, tileArray, playerTilePos);
+                i.Update(gameTime, gameController, playerTilePos);
             }
             else if (ghostTimer > ghostTimerLength)
             {
-                c.Update(gameTime, tileArray, playerTilePos);
-                i.Update(gameTime, tileArray, playerTilePos);
+                c.Update(gameTime, gameController, playerTilePos);
+                i.Update(gameTime, gameController, playerTilePos);
             }
 
-            p.Update(gameTime, tileArray, playerTilePos);
-            b.Update(gameTime, tileArray, playerTilePos);
+            p.Update(gameTime, gameController, playerTilePos);
+            b.Update(gameTime, gameController, playerTilePos);
+
+            if (i.reset == true || b.reset == true || p.reset == true || c.reset == true)
+            {
+                resetEntities(i, b, p, c);
+                i.reset = false;
+                b.reset = false;
+                p.reset = false;
+                c.reset = false;
+            }
         }
 
         public void drawPacmanGridDebugger(SpriteBatch spriteBatch)
@@ -162,10 +171,13 @@ namespace Pacman
             }
         }
 
-        // calling this function on Enemy update (if path to pacman is equal to 0)
-        public static void gameOver()
+        public void resetEntities(Inky i, Blinky b, Pinky p, Clyde c)
         {
-
+            ghostTimer = 0;
+            i.Position = new Vector2(tileArray[11, 14].Position.X+12, tileArray[11, 14].Position.Y);
+            b.Position = new Vector2(tileArray[13, 11].Position.X + 12, tileArray[13, 11].Position.Y);
+            p.Position = new Vector2(tileArray[13, 14].Position.X + 12, tileArray[13, 14].Position.Y); 
+            c.Position = new Vector2(tileArray[15, 14].Position.X + 12, tileArray[15, 14].Position.Y); 
         }
 
         public void drawPathFindingDebugger(SpriteBatch spriteBatch, List<Vector2> path)

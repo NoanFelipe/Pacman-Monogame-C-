@@ -26,5 +26,11 @@ namespace Pacman
 
             enemyAnim = new SpriteAnimation(0.08f, rectsLeft);
         }
+
+        public override Vector2 getTargetPosition(Vector2 playerTilePos)
+        {
+            return new Vector2(26, 2);
+            //return playerTilePos;
+        }
     }
 }
