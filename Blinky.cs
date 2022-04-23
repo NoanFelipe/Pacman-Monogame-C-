@@ -10,7 +10,7 @@ namespace Pacman
     {
         public Blinky(int tileX, int tileY, Tile[,] tileArray) : base(tileX, tileY, tileArray)
         {
-            //position.X += 12;
+            ScatterTargetTile = new Vector2(26, 2);
 
             rectsDown[0] = new Rectangle(1659, 195, 42, 42);
             rectsDown[1] = new Rectangle(1707, 195, 42, 42);
@@ -25,12 +25,6 @@ namespace Pacman
             rectsRight[1] = new Rectangle(1419, 195, 42, 42);
 
             enemyAnim = new SpriteAnimation(0.08f, rectsLeft);
-        }
-
-        public override Vector2 getTargetPosition(Vector2 playerTilePos)
-        {
-            return new Vector2(26, 2);
-            //return playerTilePos;
         }
     }
 }

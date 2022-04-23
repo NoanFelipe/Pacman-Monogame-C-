@@ -12,6 +12,8 @@ namespace Pacman
     {
         public Inky(int tileX, int tileY, Tile[,] tileArray) : base(tileX, tileY, tileArray)
         {
+            ScatterTargetTile = new Vector2(25, 29);
+
             rectsDown[0] = new Rectangle(1659, 291, 42, 42);
             rectsDown[1] = new Rectangle(1707, 291, 42, 42);
 
@@ -23,12 +25,6 @@ namespace Pacman
 
             rectsRight[0] = new Rectangle(1371, 291, 42, 42);
             rectsRight[1] = new Rectangle(1419, 291, 42, 42);
-        }
-
-        public override Vector2 getTargetPosition(Vector2 playerTilePos)
-        {
-            return new Vector2(25, 29);
-            //return playerTilePos;
         }
     }
 }

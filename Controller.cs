@@ -52,8 +52,15 @@ namespace Pacman
         public Tile[,] tileArray;
         public List<Snack> snackList = new List<Snack>();
 
-        public float ghostTimer;
-        public float ghostTimerLength = 10f;
+        public Enemy.EnemyState enemiesState = Enemy.EnemyState.Scatter;
+
+        public float ghostInitialTimer;
+        public float ghostInitialTimerLength = 6f;
+
+        public float ghostTimerScatter;
+        public float ghostTimerScatterLength = 15f;
+        public float ghostTimerChaser;
+        public float ghostTimerChaserLength = 25f;
 
         public Controller()
         {
@@ -124,20 +131,21 @@ namespace Pacman
 
         public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos)
         {
-            if (ghostTimer < ghostTimerLength)
+            if (ghostInitialTimer < ghostInitialTimerLength)
             {
-                ghostTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ghostInitialTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 c.EnemyAnim.Update(gameTime);
                 i.EnemyAnim.Update(gameTime);
             }
-            if (ghostTimer > ghostTimerLength / 2 && ghostTimer < ghostTimerLength)
+            if (ghostInitialTimer > ghostInitialTimerLength / 2 && ghostInitialTimer < ghostInitialTimerLength)
             {
                 i.Update(gameTime, gameController, playerTilePos);
             }
-            else if (ghostTimer > ghostTimerLength)
+            else if (ghostInitialTimer > ghostInitialTimerLength) // When Initial timer ends, starts the timers to switch from scatter to chaser
             {
                 c.Update(gameTime, gameController, playerTilePos);
                 i.Update(gameTime, gameController, playerTilePos);
+                switchBetweenStates(i, b, p, c, gameTime);
             }
 
             p.Update(gameTime, gameController, playerTilePos);
@@ -145,12 +153,43 @@ namespace Pacman
 
             if (i.reset == true || b.reset == true || p.reset == true || c.reset == true)
             {
-                resetEntities(i, b, p, c);
+                resetGhosts(i, b, p, c);
                 i.reset = false;
                 b.reset = false;
                 p.reset = false;
                 c.reset = false;
             }
+        }
+
+        public void switchBetweenStates(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime)
+        {
+            if (enemiesState == Enemy.EnemyState.Scatter)
+            {
+                ghostTimerScatter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (ghostTimerScatter > ghostTimerScatterLength)
+                {
+                    ghostTimerScatter = 0;
+                    enemiesState = Enemy.EnemyState.Chase;
+                    setGhostStates(i, b, p, c, Enemy.EnemyState.Chase);
+                }
+            }else if (enemiesState == Enemy.EnemyState.Chase)
+            {
+                ghostTimerChaser += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (ghostTimerChaser > ghostTimerChaserLength)
+                {
+                    ghostTimerChaser = 0;
+                    enemiesState = Enemy.EnemyState.Scatter;
+                    setGhostStates(i, b, p, c, Enemy.EnemyState.Scatter);
+                }
+            }
+        }
+
+        public void setGhostStates(Inky i, Blinky b, Pinky p, Clyde c, Enemy.EnemyState eState)
+        {
+            i.state = eState;
+            b.state = eState;
+            p.state = eState;
+            c.state = eState;
         }
 
         public void drawPacmanGridDebugger(SpriteBatch spriteBatch)
@@ -171,9 +210,13 @@ namespace Pacman
             }
         }
 
-        public void resetEntities(Inky i, Blinky b, Pinky p, Clyde c)
+        public void resetGhosts(Inky i, Blinky b, Pinky p, Clyde c)
         {
-            ghostTimer = 0;
+            ghostInitialTimer = 0;
+            i.PathToPacMan = new List<Vector2>();
+            b.PathToPacMan = new List<Vector2>();
+            p.PathToPacMan = new List<Vector2>();
+            c.PathToPacMan = new List<Vector2>();
             i.Position = new Vector2(tileArray[11, 14].Position.X+12, tileArray[11, 14].Position.Y);
             b.Position = new Vector2(tileArray[13, 11].Position.X + 12, tileArray[13, 11].Position.Y);
             p.Position = new Vector2(tileArray[13, 14].Position.X + 12, tileArray[13, 14].Position.Y); 

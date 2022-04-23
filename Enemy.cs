@@ -9,6 +9,9 @@ namespace Pacman
 {
     public class Enemy
     {
+        public enum EnemyState { Scatter, Chase, Frightened };
+        public EnemyState state = EnemyState.Scatter;
+        public Vector2 ScatterTargetTile;
         protected Vector2 position;
         public Vector2 Position
         {
@@ -29,6 +32,7 @@ namespace Pacman
         public List<Vector2> PathToPacMan
         {
             get { return pathToPacMan; }
+            set { pathToPacMan = value; }
         }
 
         protected int speed = 135;
@@ -74,9 +78,13 @@ namespace Pacman
             Move(gameTime, gameController.tileArray);
         }
 
-        // changes for each ghost, returns target position
+        // returns target position for diferent ghost states (scatter, chase, etc)
         public virtual Vector2 getTargetPosition(Vector2 playerTilePos)
         {
+            if (state == EnemyState.Scatter)
+            {
+                return ScatterTargetTile;
+            }
             return playerTilePos;
         }
 
