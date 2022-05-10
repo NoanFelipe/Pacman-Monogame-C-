@@ -11,6 +11,7 @@ namespace Pacman
         public Clyde(int tileX, int tileY, Tile[,] tileArray) : base(tileX, tileY, tileArray)
         {
             ScatterTargetTile = new Vector2(2, 29);
+            type = GhostType.Clyde;
 
             rectsDown[0] = new Rectangle(1659, 339, 42, 42);
             rectsDown[1] = new Rectangle(1707, 339, 42, 42);

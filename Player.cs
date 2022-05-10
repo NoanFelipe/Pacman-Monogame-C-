@@ -62,6 +62,11 @@ namespace Pacman
             get { return currentTile; }
         }
 
+        public Dir Direction
+        {
+            get { return direction; }
+        }
+
         public Vector2 PreviousTile
         {
             get { return previousTile; }

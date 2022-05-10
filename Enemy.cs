@@ -9,6 +9,8 @@ namespace Pacman
 {
     public class Enemy
     {
+        public enum GhostType {Inky, Blinky, Pinky, Clyde};
+        public GhostType type;
         public enum EnemyState { Scatter, Chase, Frightened };
         public EnemyState state = EnemyState.Scatter;
         public Vector2 ScatterTargetTile;
@@ -22,9 +24,15 @@ namespace Pacman
         public bool reset = false;
 
         protected Vector2 currentTile;
+        public Vector2 CurrentTile
+        {
+            get { return currentTile; }
+        }
         protected Vector2 previousTile;
         protected Tile.TileType previousTileType;
         protected Dir direction;
+
+        protected Dir playerLastDir; // if player direction is none, this remembers the last direction so that the ghost can know its target tile
 
         protected List<Vector2> pathToPacMan;
         protected Vector2 foundpathTile;
@@ -35,7 +43,7 @@ namespace Pacman
             set { pathToPacMan = value; }
         }
 
-        protected int speed = 135;
+        protected int speed = 140;
 
         protected Rectangle[] rectsDown = new Rectangle[2];
         protected Rectangle[] rectsUp = new Rectangle[2];
@@ -69,30 +77,46 @@ namespace Pacman
             enemyAnim.Draw(spriteBatch, spriteSheet, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
         }
 
-        public void Update(GameTime gameTime, Controller gameController, Vector2 playerTilePos)
+        public void Update(GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
         {
             updateTilePosition(gameController.tileArray);
             enemyAnim.Update(gameTime);
 
-            decideDirection(playerTilePos, gameController);
+            decideDirection(playerTilePos, playerDir, gameController, blinkyPos);
             Move(gameTime, gameController.tileArray);
         }
 
         // returns target position for diferent ghost states (scatter, chase, etc)
-        public virtual Vector2 getTargetPosition(Vector2 playerTilePos)
+        public virtual Vector2 getScatterTargetPosition()
         {
-            if (state == EnemyState.Scatter)
-            {
-                return ScatterTargetTile;
-            }
+            return ScatterTargetTile;
+        }
+
+        public virtual Vector2 getChaseTargetPosition(Vector2 playerTilePos, Dir playerDir, Tile[,] tileArray)
+        {
             return playerTilePos;
         }
 
-        public void decideDirection(Vector2 playerTilePos, Controller gameController)
+        public virtual Vector2 getChaseTargetPosition(Vector2 playerTilePos, Dir playerDir, Tile[,] tileArray, Vector2 blinkyPos)
+        {
+            return playerTilePos;
+        }
+
+        public void decideDirection(Vector2 playerTilePos, Dir playerDir, Controller gameController, Vector2 blinkyPos)
         {
             if (!foundpathTile.Equals(currentTile))
-            { 
-                pathToPacMan = Pathfinding.findPath(currentTile, getTargetPosition(playerTilePos), gameController.tileArray, direction);
+            {
+                if (state == EnemyState.Scatter)
+                {
+                    pathToPacMan = Pathfinding.findPath(currentTile, getScatterTargetPosition(), gameController.tileArray, direction);
+                } else if (state == EnemyState.Chase)
+                {
+                    pathToPacMan = Pathfinding.findPath(currentTile, getChaseTargetPosition(playerTilePos, playerDir, gameController.tileArray), gameController.tileArray, direction);
+                    if (type == GhostType.Inky)
+                    {
+                        pathToPacMan = Pathfinding.findPath(currentTile, getChaseTargetPosition(playerTilePos, playerDir, gameController.tileArray, blinkyPos), gameController.tileArray, direction);
+                    }
+                }
                 foundpathTile = currentTile;
             }
 

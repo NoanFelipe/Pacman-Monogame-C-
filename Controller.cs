@@ -129,7 +129,7 @@ namespace Pacman
             c.Draw(spriteBatch, spriteSheet);
         }
 
-        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos)
+        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
         {
             if (ghostInitialTimer < ghostInitialTimerLength)
             {
@@ -139,17 +139,17 @@ namespace Pacman
             }
             if (ghostInitialTimer > ghostInitialTimerLength / 2 && ghostInitialTimer < ghostInitialTimerLength)
             {
-                i.Update(gameTime, gameController, playerTilePos);
+                i.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
             }
             else if (ghostInitialTimer > ghostInitialTimerLength) // When Initial timer ends, starts the timers to switch from scatter to chaser
             {
-                c.Update(gameTime, gameController, playerTilePos);
-                i.Update(gameTime, gameController, playerTilePos);
+                c.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+                i.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
                 switchBetweenStates(i, b, p, c, gameTime);
             }
 
-            p.Update(gameTime, gameController, playerTilePos);
-            b.Update(gameTime, gameController, playerTilePos);
+            p.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+            b.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
 
             if (i.reset == true || b.reset == true || p.reset == true || c.reset == true)
             {

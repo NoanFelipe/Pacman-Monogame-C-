@@ -11,6 +11,7 @@ namespace Pacman
         public Blinky(int tileX, int tileY, Tile[,] tileArray) : base(tileX, tileY, tileArray)
         {
             ScatterTargetTile = new Vector2(26, 2);
+            type = GhostType.Blinky;
 
             rectsDown[0] = new Rectangle(1659, 195, 42, 42);
             rectsDown[1] = new Rectangle(1707, 195, 42, 42);

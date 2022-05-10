@@ -140,7 +140,7 @@ namespace Pacman
 
             Pacman.updatePlayerTilePosition(gameController.tileArray); 
             Pacman.Update(gameTime, gameController.tileArray);
-            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController, Pacman.CurrentTile);
+            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinky.CurrentTile);
 
             base.Update(gameTime);
         }
@@ -162,7 +162,7 @@ namespace Pacman
 
             //gameController.drawGridDebugger(_spriteBatch);
 
-            //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
+            gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
             //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
             //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
             //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
