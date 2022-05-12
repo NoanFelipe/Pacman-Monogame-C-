@@ -25,5 +25,14 @@ namespace Pacman
             rectsRight[0] = new Rectangle(1371, 339, 42, 42);
             rectsRight[1] = new Rectangle(1419, 339, 42, 42);
         }
+
+        public override Vector2 getChaseTargetPosition(Vector2 playerTilePos, Dir playerDir, Tile[,] tileArray)
+        {
+            if (Tile.getDistanceBetweenTiles(playerTilePos, currentTile) > 8)
+            {
+                return playerTilePos;
+            }
+            return ScatterTargetTile;
+        }
     }
 }
