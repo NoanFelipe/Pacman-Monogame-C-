@@ -87,7 +87,11 @@ namespace Pacman
             MySounds.extend = Content.Load<SoundEffect>("Sounds/extend");
             MySounds.game_start = Content.Load<SoundEffect>("Sounds/game_start");
             MySounds.intermission = Content.Load<SoundEffect>("Sounds/intermission");
+
             MySounds.munch = Content.Load<SoundEffect>("Sounds/munch");
+            MySounds.munchInstance = MySounds.munch.CreateInstance();
+            MySounds.munchInstance.IsLooped = true;
+
             MySounds.retreating = Content.Load<SoundEffect>("Sounds/retreating");
             MySounds.siren_1 = Content.Load<SoundEffect>("Sounds/siren_1");
             MySounds.siren_2 = Content.Load<SoundEffect>("Sounds/siren_2");
@@ -165,7 +169,7 @@ namespace Pacman
             //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
             //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
             //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
-            gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
+            //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
 
             //gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);

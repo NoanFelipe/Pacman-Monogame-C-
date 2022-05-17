@@ -13,6 +13,7 @@ namespace Pacman
     {
         public static SoundEffect game_start;
         public static SoundEffect munch;
+        public static SoundEffectInstance munchInstance;
         public static SoundEffect credit;
         public static SoundEffect death_1;
         public static SoundEffect death_2;
@@ -26,10 +27,5 @@ namespace Pacman
         public static SoundEffect siren_3;
         public static SoundEffect siren_4;
         public static SoundEffect siren_5;
-
-        public static void loadSounds()
-        {
-            
-        }
     }
 }

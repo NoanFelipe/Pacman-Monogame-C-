@@ -198,6 +198,7 @@ namespace Pacman
                 case Dir.None:
                     Vector2 p = tileArray[(int)currentTile.X, (int)currentTile.Y].Position;
                     position = new Vector2(p.X+2, p.Y+1);
+                    MySounds.munchInstance.Pause();
                     break;
             }
         }
@@ -206,6 +207,7 @@ namespace Pacman
         {
             Game1.score += Game1.gameController.snackList[listPosition].scoreGain;
             Game1.gameController.snackList.RemoveAt(listPosition);
+            MySounds.munchInstance.Play();
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet)
@@ -305,6 +307,10 @@ namespace Pacman
                             {
                                 previousTile = currentTile;
                                 currentTile = new Vector2( x, y );
+                                if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
+                                {
+                                    MySounds.munchInstance.Pause();
+                                }
                             }
                         }
                     }else if (direction == Dir.Left)
@@ -315,6 +321,10 @@ namespace Pacman
                             {
                                 previousTile = currentTile;
                                 currentTile = new Vector2(x, y);
+                                if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
+                                {
+                                    MySounds.munchInstance.Pause();
+                                }
                             }
                         }
                     }else if (direction == Dir.Up)
@@ -325,6 +335,10 @@ namespace Pacman
                             {
                                 previousTile = currentTile;
                                 currentTile = new Vector2(x, y);
+                                if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
+                                {
+                                    MySounds.munchInstance.Pause();
+                                }
                             }
                         }
                     }
