@@ -198,7 +198,7 @@ namespace Pacman
                 case Dir.None:
                     Vector2 p = tileArray[(int)currentTile.X, (int)currentTile.Y].Position;
                     position = new Vector2(p.X+2, p.Y+1);
-                    MySounds.munchInstance.Pause();
+                    MySounds.munchInstance.Stop();
                     break;
             }
         }
@@ -309,7 +309,7 @@ namespace Pacman
                                 currentTile = new Vector2( x, y );
                                 if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
                                 {
-                                    MySounds.munchInstance.Pause();
+                                    MySounds.munchInstance.Stop();
                                 }
                             }
                         }
@@ -323,7 +323,7 @@ namespace Pacman
                                 currentTile = new Vector2(x, y);
                                 if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
                                 {
-                                    MySounds.munchInstance.Pause();
+                                    MySounds.munchInstance.Stop();
                                 }
                             }
                         }
@@ -337,7 +337,7 @@ namespace Pacman
                                 currentTile = new Vector2(x, y);
                                 if (Game1.gameController.checkTileType(currentTile, Tile.TileType.None))
                                 {
-                                    MySounds.munchInstance.Pause();
+                                    MySounds.munchInstance.Stop();
                                 }
                             }
                         }

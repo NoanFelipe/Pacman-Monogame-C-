@@ -11,7 +11,7 @@ namespace Pacman
     {
         public enum GhostType {Inky, Blinky, Pinky, Clyde};
         public GhostType type;
-        public enum EnemyState { Scatter, Chase, Frightened };
+        public enum EnemyState { Scatter, Chase, Frightened, Eaten };
         public EnemyState state = EnemyState.Scatter;
         public Vector2 ScatterTargetTile;
         protected Vector2 position;
@@ -21,7 +21,7 @@ namespace Pacman
             set { position = value; }
         }
 
-        public bool reset = false;
+        public bool colliding = false;
 
         protected Vector2 currentTile;
         public Vector2 CurrentTile
@@ -120,7 +120,7 @@ namespace Pacman
                 foundpathTile = currentTile;
             }
 
-            if (playerTilePos.Equals(currentTile)) { reset = true; return; }
+            if (playerTilePos.Equals(currentTile)) { colliding = true; return; }
             if (pathToPacMan.Count == 0) { return; }
 
             if (pathToPacMan[0].X > currentTile.X)

@@ -151,18 +151,24 @@ namespace Pacman
             p.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
             b.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
 
-            if (i.reset == true || b.reset == true || p.reset == true || c.reset == true)
+            if (i.colliding == true || b.colliding == true || p.colliding == true || c.colliding == true)
             {
                 resetGhosts(i, b, p, c);
-                i.reset = false;
-                b.reset = false;
-                p.reset = false;
-                c.reset = false;
+                i.colliding = false;
+                b.colliding = false;
+                p.colliding = false;
+                c.colliding = false;
             }
         }
 
         public void switchBetweenStates(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime)
         {
+            if (i.state == Enemy.EnemyState.Frightened || i.state == Enemy.EnemyState.Eaten ||
+                b.state == Enemy.EnemyState.Frightened || b.state == Enemy.EnemyState.Eaten ||
+                c.state == Enemy.EnemyState.Frightened || c.state == Enemy.EnemyState.Eaten ||
+                p.state == Enemy.EnemyState.Frightened || p.state == Enemy.EnemyState.Eaten)
+                return;
+
             if (enemiesState == Enemy.EnemyState.Scatter)
             {
                 ghostTimerScatter += (float)gameTime.ElapsedGameTime.TotalSeconds;
