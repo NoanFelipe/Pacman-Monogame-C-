@@ -62,6 +62,8 @@ namespace Pacman
         public float ghostTimerChaser;
         public float ghostTimerChaserLength = 25f;
 
+        public bool eatenBigSnack = false;
+
         public Controller()
         {
             numberOfTilesX = 28;
@@ -131,6 +133,12 @@ namespace Pacman
 
         public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
         {
+            if (eatenBigSnack)
+            {
+                eatenBigSnack = false;
+                setGhostStates(i, b, p, c, Enemy.EnemyState.Frightened);
+            }
+
             if (ghostInitialTimer < ghostInitialTimerLength)
             {
                 ghostInitialTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -150,6 +158,7 @@ namespace Pacman
 
             p.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
             b.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+
 
             if (i.colliding == true || b.colliding == true || p.colliding == true || c.colliding == true)
             {
@@ -286,6 +295,68 @@ namespace Pacman
                 }
                 return true;
             }
+        }
+
+        public bool isNextTileAvailableGhosts(Dir dir, Vector2 tile)
+        { // tile != new int[2] {0, 14} && tile != new int[2] {numberOfTilesX-1 ,14}
+            if (tile.Equals(new Vector2(0, 14)) || tile.Equals(new Vector2(numberOfTilesX - 1, 14)))
+            {
+                if (dir == Dir.Right || dir == Dir.Left)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                switch (dir)
+                {
+                    case Dir.Right:
+                        if (tileArray[(int)tile.X + 1, (int)tile.Y].tileType == Tile.TileType.Wall)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Dir.Left:
+                        if (tileArray[(int)tile.X - 1, (int)tile.Y].tileType == Tile.TileType.Wall)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Dir.Down:
+                        if (tileArray[(int)tile.X, (int)tile.Y + 1].tileType == Tile.TileType.Wall)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Dir.Up:
+                        if (tileArray[(int)tile.X, (int)tile.Y - 1].tileType == Tile.TileType.Wall)
+                        {
+                            return false;
+                        }
+                        break;
+                }
+                return true;
+            }
+        }
+
+        public static Dir returnOppositeDir(Dir dir)
+        {
+            switch (dir)
+            {
+                case Dir.Up:
+                    return Dir.Down;
+                case Dir.Down:
+                    return Dir.Up;
+                case Dir.Right:
+                    return Dir.Left;
+                case Dir.Left:
+                    return Dir.Right;
+            }
+            return Dir.None;
         }
 
         public int findSnackListPosition(Vector2 snackGridPos)

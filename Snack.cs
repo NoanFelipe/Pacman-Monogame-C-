@@ -11,7 +11,7 @@ namespace Pacman
     public class Snack
     {
         public enum SnackType { Small, Big };
-        private SnackType snackType;
+        public SnackType snackType;
         private Vector2 gridPosition;
         private int[] gridTile;
         public int scoreGain;

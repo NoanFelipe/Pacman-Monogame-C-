@@ -165,12 +165,12 @@ namespace Pacman
             Pacman.Draw(_spriteBatch, spriteSheet1);
             gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
 
-            //gameController.drawGridDebugger(_spriteBatch);
+            gameController.drawGridDebugger(_spriteBatch);
 
-            //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
+            gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
+            gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
+            gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
+            gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
 
             //gameController.drawPacmanGridDebugger(_spriteBatch);
             //Pacman.debugPacmanPosition(_spriteBatch);

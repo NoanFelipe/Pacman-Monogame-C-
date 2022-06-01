@@ -206,6 +206,12 @@ namespace Pacman
         public void eatSnack(int listPosition)
         {
             Game1.score += Game1.gameController.snackList[listPosition].scoreGain;
+
+            if (Game1.gameController.snackList[listPosition].snackType == Snack.SnackType.Big)
+            {
+                Game1.gameController.eatenBigSnack = true;
+            }
+
             Game1.gameController.snackList.RemoveAt(listPosition);
             MySounds.munchInstance.Play();
         }

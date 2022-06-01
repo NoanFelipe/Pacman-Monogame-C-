@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -50,6 +51,8 @@ namespace Pacman
         protected Rectangle[] rectsLeft = new Rectangle[2];
         protected Rectangle[] rectsRight = new Rectangle[2];
 
+        protected Rectangle[] frightenedRects = new Rectangle[2];
+
         protected int drawOffSetX = -9;
         protected int drawOffSetY = -9;
 
@@ -66,6 +69,11 @@ namespace Pacman
             currentTile = new Vector2(tileX, tileY);
             previousTile = new Vector2(-1,-1);
             direction = Dir.None;
+
+
+            frightenedRects[0] = new Rectangle(1755, 195, 42, 42);
+            frightenedRects[1] = new Rectangle(1803, 195, 42, 42);
+
 
             enemyAnim = new SpriteAnimation(0.08f, rectsUp);
 
@@ -102,6 +110,47 @@ namespace Pacman
             return playerTilePos;
         }
 
+        public virtual Vector2 getFrightenedTargetPosition()
+        {
+            List<Dir> dirs = new List<Dir>();
+
+            if (Controller.returnOppositeDir(direction) != Dir.Left && Game1.gameController.isNextTileAvailableGhosts(Dir.Left, currentTile))
+                dirs.Add(Dir.Left);
+            if (Controller.returnOppositeDir(direction) != Dir.Right && Game1.gameController.isNextTileAvailableGhosts(Dir.Right, currentTile))
+                dirs.Add(Dir.Right);
+            if (Controller.returnOppositeDir(direction) != Dir.Down && Game1.gameController.isNextTileAvailableGhosts(Dir.Down, currentTile))
+                dirs.Add(Dir.Down);
+            if (Controller.returnOppositeDir(direction) != Dir.Up && Game1.gameController.isNextTileAvailableGhosts(Dir.Up, currentTile))
+                dirs.Add(Dir.Up);
+
+            if (dirs.Count >= 0)
+            {
+                Random rd = new Random();
+                int randDirNum = rd.Next(0, dirs.Count);
+
+                Vector2 rPos = currentTile;
+
+                switch (dirs[randDirNum])
+                {
+                    case Dir.Left:
+                        rPos.X--;
+                        break;
+                    case Dir.Right:
+                        rPos.X++;
+                        break;
+                    case Dir.Down:
+                        rPos.Y++;
+                        break;
+                    case Dir.Up:
+                        rPos.Y--;
+                        break;
+                }
+
+                return rPos;
+            }
+            return currentTile;
+        }
+
         public void decideDirection(Vector2 playerTilePos, Dir playerDir, Controller gameController, Vector2 blinkyPos)
         {
             if (!foundpathTile.Equals(currentTile))
@@ -116,6 +165,9 @@ namespace Pacman
                     {
                         pathToPacMan = Pathfinding.findPath(currentTile, getChaseTargetPosition(playerTilePos, playerDir, gameController.tileArray, blinkyPos), gameController.tileArray, direction);
                     }
+                } else if (state == EnemyState.Frightened)
+                {
+                    pathToPacMan = Pathfinding.findPath(currentTile, getFrightenedTargetPosition(), gameController.tileArray, direction);
                 }
                 foundpathTile = currentTile;
             }
@@ -148,26 +200,39 @@ namespace Pacman
         public void Move(GameTime gameTime, Tile[,] tileArray)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             switch (direction)
             {
                 case Dir.Right:
                     position.X += speed * dt;
-                    enemyAnim.setSourceRects(rectsRight);
+                    if (state == EnemyState.Frightened)
+                        enemyAnim.setSourceRects(frightenedRects);
+                    else
+                        enemyAnim.setSourceRects(rectsRight);
                     break;
 
                 case Dir.Left:
                     position.X -= speed * dt;
-                    enemyAnim.setSourceRects(rectsLeft);
+                    if (state == EnemyState.Frightened)
+                        enemyAnim.setSourceRects(frightenedRects);
+                    else
+                        enemyAnim.setSourceRects(rectsLeft);
                     break;
 
                 case Dir.Down:
                     position.Y += speed * dt;
-                    enemyAnim.setSourceRects(rectsDown);
+                    if (state == EnemyState.Frightened)
+                        enemyAnim.setSourceRects(frightenedRects);
+                    else
+                        enemyAnim.setSourceRects(rectsDown);
                     break;
 
                 case Dir.Up:
                     position.Y -= speed * dt;
-                    enemyAnim.setSourceRects(rectsUp);
+                    if (state == EnemyState.Frightened)
+                        enemyAnim.setSourceRects(frightenedRects);
+                    else
+                        enemyAnim.setSourceRects(rectsUp);
                     break;
 
                 case Dir.None:
