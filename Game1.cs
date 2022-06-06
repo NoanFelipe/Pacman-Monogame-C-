@@ -172,8 +172,8 @@ namespace Pacman
             gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
             gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
 
-            //gameController.drawPacmanGridDebugger(_spriteBatch);
-            //Pacman.debugPacmanPosition(_spriteBatch);
+            gameController.drawPacmanGridDebugger(_spriteBatch);
+            Pacman.debugPacmanPosition(_spriteBatch);
 
             _spriteBatch.End();
 

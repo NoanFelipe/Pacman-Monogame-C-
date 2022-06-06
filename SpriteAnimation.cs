@@ -28,8 +28,15 @@ namespace Pacman
             animationIndex = startingAnimIndex;
         }
 
+        public void setAnimIndex (int newAnimIndex)
+        {
+            animationIndex = newAnimIndex;
+        }
+
         public void setSourceRects(Rectangle[] newSourceRects)
         {
+            if (newSourceRects.Length != sourceRectangles.Length)
+                animationIndex = 0;
             sourceRectangles = newSourceRects;
         }
 

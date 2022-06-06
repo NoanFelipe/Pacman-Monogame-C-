@@ -52,6 +52,7 @@ namespace Pacman
         protected Rectangle[] rectsRight = new Rectangle[2];
 
         protected Rectangle[] frightenedRects = new Rectangle[2];
+        protected Rectangle[] frightenedRectsEnd = new Rectangle[8];
 
         protected int drawOffSetX = -9;
         protected int drawOffSetY = -9;
@@ -63,6 +64,9 @@ namespace Pacman
             get { return enemyAnim; }
         }
 
+        public float timerFrightened;
+        public float timerFrightenedLength = 8f;
+
         public Enemy(int tileX, int tileY, Tile[,] tileArray)
         {
             position = tileArray[tileX, tileY].Position;
@@ -73,6 +77,15 @@ namespace Pacman
 
             frightenedRects[0] = new Rectangle(1755, 195, 42, 42);
             frightenedRects[1] = new Rectangle(1803, 195, 42, 42);
+
+            frightenedRectsEnd[0] = new Rectangle(1755, 195, 42, 42);
+            frightenedRectsEnd[1] = new Rectangle(1803, 195, 42, 42);
+            frightenedRectsEnd[2] = new Rectangle(1755, 195, 42, 42);
+            frightenedRectsEnd[3] = new Rectangle(1803, 195, 42, 42);
+            frightenedRectsEnd[4] = new Rectangle(1851, 195, 42, 42);
+            frightenedRectsEnd[5] = new Rectangle(1899, 195, 42, 42);
+            frightenedRectsEnd[6] = new Rectangle(1851, 195, 42, 42);
+            frightenedRectsEnd[7] = new Rectangle(1899, 195, 42, 42);
 
 
             enemyAnim = new SpriteAnimation(0.08f, rectsUp);
@@ -87,6 +100,15 @@ namespace Pacman
 
         public void Update(GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
         {
+            if (state == EnemyState.Frightened)
+            {
+                timerFrightened += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (timerFrightened > timerFrightenedLength)
+                {
+                    state = EnemyState.Chase;
+                    timerFrightened = 0;
+                }
+            }
             updateTilePosition(gameController.tileArray);
             enemyAnim.Update(gameTime);
 
@@ -206,7 +228,14 @@ namespace Pacman
                 case Dir.Right:
                     position.X += speed * dt;
                     if (state == EnemyState.Frightened)
+                    {
+                        if (timerFrightened > 5)
+                        {
+                            enemyAnim.setSourceRects(frightenedRectsEnd);
+                            break;
+                        }
                         enemyAnim.setSourceRects(frightenedRects);
+                    }
                     else
                         enemyAnim.setSourceRects(rectsRight);
                     break;
@@ -214,7 +243,14 @@ namespace Pacman
                 case Dir.Left:
                     position.X -= speed * dt;
                     if (state == EnemyState.Frightened)
+                    {
+                        if (timerFrightened > 5)
+                        {
+                            enemyAnim.setSourceRects(frightenedRectsEnd);
+                            break;
+                        }
                         enemyAnim.setSourceRects(frightenedRects);
+                    }
                     else
                         enemyAnim.setSourceRects(rectsLeft);
                     break;
@@ -222,7 +258,14 @@ namespace Pacman
                 case Dir.Down:
                     position.Y += speed * dt;
                     if (state == EnemyState.Frightened)
+                    {
+                        if (timerFrightened > 5)
+                        {
+                            enemyAnim.setSourceRects(frightenedRectsEnd);
+                            break;
+                        }
                         enemyAnim.setSourceRects(frightenedRects);
+                    }
                     else
                         enemyAnim.setSourceRects(rectsDown);
                     break;
@@ -230,7 +273,14 @@ namespace Pacman
                 case Dir.Up:
                     position.Y -= speed * dt;
                     if (state == EnemyState.Frightened)
+                    {
+                        if (timerFrightened > 5)
+                        {
+                            enemyAnim.setSourceRects(frightenedRectsEnd);
+                            break;
+                        }
                         enemyAnim.setSourceRects(frightenedRects);
+                    }
                     else
                         enemyAnim.setSourceRects(rectsUp);
                     break;
