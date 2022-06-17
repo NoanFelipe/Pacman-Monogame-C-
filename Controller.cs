@@ -55,12 +55,12 @@ namespace Pacman
         public Enemy.EnemyState enemiesState = Enemy.EnemyState.Scatter;
 
         public float ghostInitialTimer;
-        public float ghostInitialTimerLength = 6f;
+        public float ghostInitialTimerLength = 2f;
 
         public float ghostTimerScatter;
         public float ghostTimerScatterLength = 15f;
         public float ghostTimerChaser;
-        public float ghostTimerChaserLength = 25f;
+        public float ghostTimerChaserLength = 20f;
 
         public bool eatenBigSnack = false;
 
@@ -137,6 +137,7 @@ namespace Pacman
             {
                 eatenBigSnack = false;
                 setGhostStates(i, b, p, c, Enemy.EnemyState.Frightened);
+                MySounds.power_pellet_instance.Play();
             }
 
             if (ghostInitialTimer < ghostInitialTimerLength)
@@ -158,7 +159,6 @@ namespace Pacman
 
             p.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
             b.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
-
 
             if (i.colliding == true || b.colliding == true || p.colliding == true || c.colliding == true)
             {
@@ -201,6 +201,20 @@ namespace Pacman
 
         public void setGhostStates(Inky i, Blinky b, Pinky p, Clyde c, Enemy.EnemyState eState)
         {
+            if(eState == Enemy.EnemyState.Chase || eState == Enemy.EnemyState.Scatter || eState == Enemy.EnemyState.Eaten)
+            {
+                i.speed = i.normalSpeed;
+                b.speed = b.normalSpeed;
+                p.speed = p.normalSpeed;
+                c.speed = c.normalSpeed;
+            }
+            else
+            {
+                i.speed = i.frightenedSpeed;
+                b.speed = b.frightenedSpeed;
+                p.speed = p.frightenedSpeed;
+                c.speed = c.frightenedSpeed;
+            }
             i.state = eState;
             b.state = eState;
             p.state = eState;

@@ -15,6 +15,7 @@ namespace Pacman
         public enum EnemyState { Scatter, Chase, Frightened, Eaten };
         public EnemyState state = EnemyState.Scatter;
         public Vector2 ScatterTargetTile;
+        public Vector2 eatenTargetTile = new Vector2(13,14);
         protected Vector2 position;
         public Vector2 Position
         {
@@ -44,12 +45,20 @@ namespace Pacman
             set { pathToPacMan = value; }
         }
 
-        protected int speed = 140;
+        public int speed = 140;
+        public int normalSpeed = 140;
+        public int frightenedSpeed = 110;
+        public int eatenSpeed = 240;
 
         protected Rectangle[] rectsDown = new Rectangle[2];
         protected Rectangle[] rectsUp = new Rectangle[2];
         protected Rectangle[] rectsLeft = new Rectangle[2];
         protected Rectangle[] rectsRight = new Rectangle[2];
+
+        protected Rectangle rectDownEaten;
+        protected Rectangle rectUpEaten;
+        protected Rectangle rectLeftEaten;
+        protected Rectangle rectRightEaten;
 
         protected Rectangle[] frightenedRects = new Rectangle[2];
         protected Rectangle[] frightenedRectsEnd = new Rectangle[8];
@@ -75,6 +84,11 @@ namespace Pacman
             direction = Dir.None;
 
 
+            rectRightEaten = new Rectangle(1755, 243, 42, 42);
+            rectLeftEaten = new Rectangle(1803, 243, 42, 42);
+            rectUpEaten = new Rectangle(1851, 243, 42, 42);
+            rectDownEaten = new Rectangle(1899, 243, 42, 42);
+
             frightenedRects[0] = new Rectangle(1755, 195, 42, 42);
             frightenedRects[1] = new Rectangle(1803, 195, 42, 42);
 
@@ -95,7 +109,26 @@ namespace Pacman
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet)
         {
-            enemyAnim.Draw(spriteBatch, spriteSheet, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+            if (state != EnemyState.Eaten)
+                enemyAnim.Draw(spriteBatch, spriteSheet, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+            else
+            {
+                switch (direction)
+                {
+                    case Dir.Up:
+                        spriteSheet.drawSprite(spriteBatch, rectUpEaten, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+                        break;
+                    case Dir.Down:
+                        spriteSheet.drawSprite(spriteBatch, rectDownEaten, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+                        break;
+                    case Dir.Left:
+                        spriteSheet.drawSprite(spriteBatch, rectLeftEaten, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+                        break;
+                    case Dir.Right:
+                        spriteSheet.drawSprite(spriteBatch, rectRightEaten, new Vector2(position.X + drawOffSetX, position.Y + drawOffSetY));
+                        break;
+                }
+            }
         }
 
         public void Update(GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
@@ -106,6 +139,7 @@ namespace Pacman
                 if (timerFrightened > timerFrightenedLength)
                 {
                     state = EnemyState.Chase;
+                    MySounds.power_pellet_instance.Stop();
                     timerFrightened = 0;
                 }
             }
@@ -173,6 +207,11 @@ namespace Pacman
             return currentTile;
         }
 
+        public virtual Vector2 getEatenTargetPosition()
+        {
+            return eatenTargetTile;
+        }
+
         public void decideDirection(Vector2 playerTilePos, Dir playerDir, Controller gameController, Vector2 blinkyPos)
         {
             if (!foundpathTile.Equals(currentTile))
@@ -190,11 +229,32 @@ namespace Pacman
                 } else if (state == EnemyState.Frightened)
                 {
                     pathToPacMan = Pathfinding.findPath(currentTile, getFrightenedTargetPosition(), gameController.tileArray, direction);
+                } else if (state == EnemyState.Eaten)
+                {
+                    pathToPacMan = Pathfinding.findPath(currentTile, getEatenTargetPosition(), gameController.tileArray, direction);
                 }
                 foundpathTile = currentTile;
             }
 
-            if (playerTilePos.Equals(currentTile)) { colliding = true; return; }
+            if (currentTile.Equals(getEatenTargetPosition()))
+            {
+                state = EnemyState.Chase;
+                speed = normalSpeed;
+            }
+            if (playerTilePos.Equals(currentTile))
+            {
+                if (state == EnemyState.Frightened)
+                {
+                    state = EnemyState.Eaten;
+                    speed = eatenSpeed;
+                    return;
+                }
+                if (state != EnemyState.Eaten)
+                { 
+                    colliding = true;
+                    return;
+                }
+            }
             if (pathToPacMan.Count == 0) { return; }
 
             if (pathToPacMan[0].X > currentTile.X)

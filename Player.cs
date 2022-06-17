@@ -210,6 +210,7 @@ namespace Pacman
             if (Game1.gameController.snackList[listPosition].snackType == Snack.SnackType.Big)
             {
                 Game1.gameController.eatenBigSnack = true;
+                MySounds.eat_fruit.Play();
             }
 
             Game1.gameController.snackList.RemoveAt(listPosition);

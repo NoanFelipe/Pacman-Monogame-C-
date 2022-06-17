@@ -13,6 +13,7 @@
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/game_start.wav</File>
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/intermission.wav</File>
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/munch.wav</File>
+    <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/power_pellet.wav</File>
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/retreating.wav</File>
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_1.wav</File>
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/siren_2.wav</File>
@@ -31,6 +32,7 @@
     <File>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/SpriteSheets/TextSprites.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

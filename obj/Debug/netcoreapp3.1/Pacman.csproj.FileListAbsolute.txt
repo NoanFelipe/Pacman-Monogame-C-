@@ -143,3 +143,4 @@ C:\Users\QAT Employee\Desktop\Programming\Pacman Related Stuff\Pacman\obj\Debug\
 C:\Users\QAT Employee\Desktop\Programming\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.1\Pacman.dll
 C:\Users\QAT Employee\Desktop\Programming\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.1\Pacman.pdb
 C:\Users\QAT Employee\Desktop\Programming\Pacman Related Stuff\Pacman\obj\Debug\netcoreapp3.1\Pacman.genruntimeconfig.cache
+C:\Users\noanf\OneDrive\Área de Trabalho\Programação\C#\My projects\Pacman\bin\Debug\netcoreapp3.1\Content\Sounds\power_pellet.xnb

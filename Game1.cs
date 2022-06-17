@@ -90,8 +90,12 @@ namespace Pacman
 
             MySounds.munch = Content.Load<SoundEffect>("Sounds/munch");
             MySounds.munchInstance = MySounds.munch.CreateInstance();
-            MySounds.munchInstance.Volume = 0.5f;
+            MySounds.munchInstance.Volume = 0.35f;
             MySounds.munchInstance.IsLooped = true;
+
+            MySounds.power_pellet = Content.Load<SoundEffect>("Sounds/power_pellet");
+            MySounds.power_pellet_instance = MySounds.power_pellet.CreateInstance();
+            MySounds.power_pellet_instance.IsLooped = true;
 
             MySounds.retreating = Content.Load<SoundEffect>("Sounds/retreating");
             MySounds.siren_1 = Content.Load<SoundEffect>("Sounds/siren_1");

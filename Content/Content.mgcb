@@ -67,6 +67,12 @@
 /processorParam:Quality=Best
 /build:Sounds/munch.wav
 
+#begin Sounds/power_pellet.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/power_pellet.wav
+
 #begin Sounds/retreating.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

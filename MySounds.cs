@@ -19,6 +19,8 @@ namespace Pacman
         public static SoundEffect death_2;
         public static SoundEffect eat_fruit;
         public static SoundEffect eat_ghost;
+        public static SoundEffect power_pellet;
+        public static SoundEffectInstance power_pellet_instance;
         public static SoundEffect extend;
         public static SoundEffect intermission;
         public static SoundEffect retreating;
