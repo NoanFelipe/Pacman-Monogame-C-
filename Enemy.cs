@@ -47,7 +47,7 @@ namespace Pacman
 
         public int speed = 140;
         public int normalSpeed = 140;
-        public int frightenedSpeed = 110;
+        public int frightenedSpeed = 100;
         public int eatenSpeed = 240;
 
         protected Rectangle[] rectsDown = new Rectangle[2];
@@ -139,7 +139,7 @@ namespace Pacman
                 if (timerFrightened > timerFrightenedLength)
                 {
                     state = EnemyState.Chase;
-                    MySounds.power_pellet_instance.Stop();
+                    speed = normalSpeed;
                     timerFrightened = 0;
                 }
             }
@@ -236,10 +236,12 @@ namespace Pacman
                 foundpathTile = currentTile;
             }
 
-            if (currentTile.Equals(getEatenTargetPosition()))
+
+            if (currentTile.Equals(getEatenTargetPosition()) && state == EnemyState.Eaten)
             {
                 state = EnemyState.Chase;
                 speed = normalSpeed;
+                MySounds.power_pellet_instance.Play();
             }
             if (playerTilePos.Equals(currentTile))
             {
@@ -247,6 +249,10 @@ namespace Pacman
                 {
                     state = EnemyState.Eaten;
                     speed = eatenSpeed;
+                    timerFrightened = 0;
+                    MySounds.eat_ghost.Play();
+                    MySounds.retreatingInstance.Play();
+                    MySounds.power_pellet_instance.Stop();
                     return;
                 }
                 if (state != EnemyState.Eaten)

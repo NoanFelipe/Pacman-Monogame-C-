@@ -140,6 +140,11 @@ namespace Pacman
                 MySounds.power_pellet_instance.Play();
             }
 
+            if (i.state != Enemy.EnemyState.Frightened && b.state != Enemy.EnemyState.Frightened && p.state != Enemy.EnemyState.Frightened && c.state != Enemy.EnemyState.Frightened)
+                MySounds.power_pellet_instance.Stop();
+            if (i.state != Enemy.EnemyState.Eaten && b.state != Enemy.EnemyState.Eaten && p.state != Enemy.EnemyState.Eaten && c.state != Enemy.EnemyState.Eaten)
+                MySounds.retreatingInstance.Stop();
+
             if (ghostInitialTimer < ghostInitialTimerLength)
             {
                 ghostInitialTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;

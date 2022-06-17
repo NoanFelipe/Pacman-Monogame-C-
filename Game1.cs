@@ -98,6 +98,9 @@ namespace Pacman
             MySounds.power_pellet_instance.IsLooped = true;
 
             MySounds.retreating = Content.Load<SoundEffect>("Sounds/retreating");
+            MySounds.retreatingInstance = MySounds.retreating.CreateInstance();
+            MySounds.retreatingInstance.IsLooped = true;
+
             MySounds.siren_1 = Content.Load<SoundEffect>("Sounds/siren_1");
             MySounds.siren_2 = Content.Load<SoundEffect>("Sounds/siren_2");
             MySounds.siren_3 = Content.Load<SoundEffect>("Sounds/siren_3");
@@ -169,15 +172,15 @@ namespace Pacman
             Pacman.Draw(_spriteBatch, spriteSheet1);
             gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
 
-            gameController.drawGridDebugger(_spriteBatch);
+            //gameController.drawGridDebugger(_spriteBatch);
 
-            gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
-            gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
-            gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
-            gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
+            //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
+            //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
+            //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
+            //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
 
-            gameController.drawPacmanGridDebugger(_spriteBatch);
-            Pacman.debugPacmanPosition(_spriteBatch);
+            //gameController.drawPacmanGridDebugger(_spriteBatch);
+            //Pacman.debugPacmanPosition(_spriteBatch);
 
             _spriteBatch.End();
 
