@@ -64,6 +64,7 @@ namespace Pacman
 
         public bool eatenBigSnack = false;
 
+        public int ghostScoreMultiplier = 1;
         public Controller()
         {
             numberOfTilesX = 28;
@@ -83,7 +84,7 @@ namespace Pacman
                     {
                         tileArray[x, y] = new Tile(new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), Tile.TileType.Snack);
                         tileArray[x, y].isEmpty = false;
-                        snackList.Add(new Snack(Snack.SnackType.Small, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y}));
+                        //snackList.Add(new Snack(Snack.SnackType.Small, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y}));
                     }
                     else if (mapDesign[y, x] == 1) // wall collider
                     {
@@ -107,6 +108,51 @@ namespace Pacman
                     }
                 }
             }
+        }
+
+        // creates snacks again for when the player eats all snacks on the screen
+        public void createSnacks()
+        {
+            for (int y = 0; y < numberOfTilesY; y++)
+            {
+                for (int x = 0; x < numberOfTilesX; x++)
+                {
+                    if (mapDesign[y, x] == 0) // small snack
+                    {
+                        tileArray[x, y] = new Tile(new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), Tile.TileType.Snack);
+                        tileArray[x, y].isEmpty = false;
+                        snackList.Add(new Snack(Snack.SnackType.Small, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y }));
+                    }
+                    else if (mapDesign[y, x] == 3) // big snack
+                    {
+                        tileArray[x, y] = new Tile(new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), Tile.TileType.Snack);
+                        tileArray[x, y].isEmpty = false;
+                        snackList.Add(new Snack(Snack.SnackType.Big, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y }));
+                    }
+                }
+            }
+        }
+
+        public void win(Inky i, Blinky b, Pinky p, Clyde c, Player pacman)
+        {
+            createSnacks();
+            resetGhosts(i,b,p,c);
+
+            ghostTimerChaser = 0;
+            ghostTimerScatter = 0;
+            ghostInitialTimer = 0;
+
+            eatenBigSnack = false;
+
+            pacman.Position = new Vector2(tileArray[13,23].Position.X + 14, tileArray[13, 23].Position.Y);
+            pacman.CurrentTile = new Vector2(13, 23);
+            pacman.PlayerAnim.setSourceRects(Player.rectsRight);
+            pacman.PlayerAnim.setAnimIndex(2);
+            pacman.Direction = Dir.Right;
+
+            MySounds.munchInstance.Stop();
+            MySounds.power_pellet_instance.Stop();
+            MySounds.retreatingInstance.Stop();
         }
 
         public void drawGridDebugger(SpriteBatch spriteBatch)
@@ -141,7 +187,10 @@ namespace Pacman
             }
 
             if (i.state != Enemy.EnemyState.Frightened && b.state != Enemy.EnemyState.Frightened && p.state != Enemy.EnemyState.Frightened && c.state != Enemy.EnemyState.Frightened)
+            { 
                 MySounds.power_pellet_instance.Stop();
+                ghostScoreMultiplier = 1;
+            }
             if (i.state != Enemy.EnemyState.Eaten && b.state != Enemy.EnemyState.Eaten && p.state != Enemy.EnemyState.Eaten && c.state != Enemy.EnemyState.Eaten)
                 MySounds.retreatingInstance.Stop();
 
@@ -215,15 +264,23 @@ namespace Pacman
             }
             else
             {
-                i.speed = i.frightenedSpeed;
-                b.speed = b.frightenedSpeed;
-                p.speed = p.frightenedSpeed;
-                c.speed = c.frightenedSpeed;
+                if (i.state != Enemy.EnemyState.Eaten)
+                    i.speed = i.frightenedSpeed;
+                if (b.state != Enemy.EnemyState.Eaten)
+                    b.speed = b.frightenedSpeed;
+                if (p.state != Enemy.EnemyState.Eaten)
+                    p.speed = p.frightenedSpeed;
+                if (c.state != Enemy.EnemyState.Eaten)
+                    c.speed = c.frightenedSpeed;
             }
-            i.state = eState;
-            b.state = eState;
-            p.state = eState;
-            c.state = eState;
+            if (i.state != Enemy.EnemyState.Eaten)
+                i.state = eState;
+            if (b.state != Enemy.EnemyState.Eaten)
+                b.state = eState;
+            if (p.state != Enemy.EnemyState.Eaten)
+                p.state = eState;
+            if (c.state != Enemy.EnemyState.Eaten)
+                c.state = eState;
         }
 
         public void drawPacmanGridDebugger(SpriteBatch spriteBatch)
@@ -247,10 +304,24 @@ namespace Pacman
         public void resetGhosts(Inky i, Blinky b, Pinky p, Clyde c)
         {
             ghostInitialTimer = 0;
+
+            setGhostStates(i, b, p, c, Enemy.EnemyState.Scatter);
+
+            i.EnemyAnim.setSourceRects(i.rectsUp);
+            b.EnemyAnim.setSourceRects(b.rectsLeft);
+            p.EnemyAnim.setSourceRects(p.rectsDown);
+            c.EnemyAnim.setSourceRects(c.rectsUp);
+
+            i.timerFrightened = 0;
+            b.timerFrightened = 0;
+            p.timerFrightened = 0;
+            c.timerFrightened = 0;
+
             i.PathToPacMan = new List<Vector2>();
             b.PathToPacMan = new List<Vector2>();
             p.PathToPacMan = new List<Vector2>();
             c.PathToPacMan = new List<Vector2>();
+
             i.Position = new Vector2(tileArray[11, 14].Position.X+12, tileArray[11, 14].Position.Y);
             b.Position = new Vector2(tileArray[13, 11].Position.X + 12, tileArray[13, 11].Position.Y);
             p.Position = new Vector2(tileArray[13, 14].Position.X + 12, tileArray[13, 14].Position.Y); 

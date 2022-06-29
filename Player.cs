@@ -17,10 +17,10 @@ namespace Pacman
         private int speed = 150;
         private int radiusOffSet = 19;
         private static Rectangle lastRect = new Rectangle(1467, 3, 39, 39);
-        private static Rectangle[] rectsDown = new Rectangle[3];
-        private static Rectangle[] rectsUp = new Rectangle[3];
-        private static Rectangle[] rectsLeft = new Rectangle[3];
-        private static Rectangle[] rectsRight = new Rectangle[3];
+        public static Rectangle[] rectsDown = new Rectangle[3];
+        public static Rectangle[] rectsUp = new Rectangle[3];
+        public static Rectangle[] rectsLeft = new Rectangle[3];
+        public static Rectangle[] rectsRight = new Rectangle[3];
 
         bool canMove = true;
         float canMoveTimer = 0;
@@ -60,11 +60,18 @@ namespace Pacman
         public Vector2 CurrentTile
         {
             get { return currentTile; }
+            set { currentTile = value; }
         }
 
         public Dir Direction
         {
             get { return direction; }
+            set { direction = value; }
+        }
+
+        public SpriteAnimation PlayerAnim
+        {
+            get { return playerAnim; }
         }
 
         public Vector2 PreviousTile
@@ -75,6 +82,7 @@ namespace Pacman
         public Vector2 Position
         {
             get { return position; }
+            set { position = value; }
         }
 
         public void setX(float newX)

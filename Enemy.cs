@@ -47,21 +47,21 @@ namespace Pacman
 
         public int speed = 140;
         public int normalSpeed = 140;
-        public int frightenedSpeed = 100;
+        public int frightenedSpeed = 90;
         public int eatenSpeed = 240;
 
-        protected Rectangle[] rectsDown = new Rectangle[2];
-        protected Rectangle[] rectsUp = new Rectangle[2];
-        protected Rectangle[] rectsLeft = new Rectangle[2];
-        protected Rectangle[] rectsRight = new Rectangle[2];
+        public Rectangle[] rectsDown = new Rectangle[2];
+        public Rectangle[] rectsUp = new Rectangle[2];
+        public Rectangle[] rectsLeft = new Rectangle[2];
+        public Rectangle[] rectsRight = new Rectangle[2];
 
-        protected Rectangle rectDownEaten;
-        protected Rectangle rectUpEaten;
-        protected Rectangle rectLeftEaten;
-        protected Rectangle rectRightEaten;
+        public Rectangle rectDownEaten;
+        public Rectangle rectUpEaten;
+        public Rectangle rectLeftEaten;
+        public Rectangle rectRightEaten;
 
-        protected Rectangle[] frightenedRects = new Rectangle[2];
-        protected Rectangle[] frightenedRectsEnd = new Rectangle[8];
+        public Rectangle[] frightenedRects = new Rectangle[2];
+        public Rectangle[] frightenedRectsEnd = new Rectangle[8];
 
         protected int drawOffSetX = -9;
         protected int drawOffSetY = -9;
@@ -212,6 +212,33 @@ namespace Pacman
             return eatenTargetTile;
         }
 
+        public virtual void getEaten()
+        {
+            switch (Game1.gameController.ghostScoreMultiplier)
+            {
+                case 1:
+                    Game1.score += 200;
+                    break;
+                case 2:
+                    Game1.score += 400;
+                    break;
+                case 3:
+                    Game1.score += 800;
+                    break;
+                case 4:
+                    Game1.score += 1600;
+                    break;
+            }
+            Game1.gameController.ghostScoreMultiplier += 1;
+            state = EnemyState.Eaten;
+            speed = eatenSpeed;
+            timerFrightened = 0;
+            MySounds.eat_ghost.Play();
+            MySounds.retreatingInstance.Play();
+            MySounds.power_pellet_instance.Stop();
+            return;
+        }
+
         public void decideDirection(Vector2 playerTilePos, Dir playerDir, Controller gameController, Vector2 blinkyPos)
         {
             if (!foundpathTile.Equals(currentTile))
@@ -247,13 +274,7 @@ namespace Pacman
             {
                 if (state == EnemyState.Frightened)
                 {
-                    state = EnemyState.Eaten;
-                    speed = eatenSpeed;
-                    timerFrightened = 0;
-                    MySounds.eat_ghost.Play();
-                    MySounds.retreatingInstance.Play();
-                    MySounds.power_pellet_instance.Stop();
-                    return;
+                    getEaten();
                 }
                 if (state != EnemyState.Eaten)
                 { 
