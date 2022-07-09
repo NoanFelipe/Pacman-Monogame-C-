@@ -170,16 +170,25 @@ namespace Pacman
         {
             List<Dir> dirs = new List<Dir>();
 
-            if (Controller.returnOppositeDir(direction) != Dir.Left && Game1.gameController.isNextTileAvailableGhosts(Dir.Left, currentTile))
+            if (currentTile.Equals(new Vector2(0,14)) || currentTile.Equals(new Vector2(Controller.numberOfTilesX-1, 14)))
+            {
+                return currentTile;
+            }
+
+            //checks if ghost is in ghost house, and if it is, returns tile outside of ghosthouse
+            if (Game1.gameController.tileArray[(int)currentTile.X, (int)currentTile.Y].tileType == Tile.TileType.GhostHouse) 
+                return new Vector2(13, 11);
+
+            if (Controller.returnOppositeDir(direction) != Dir.Left && Game1.gameController.isNextTileAvailableGhosts(Dir.Left, currentTile) && Game1.gameController.tileArray[(int)currentTile.X - 1, (int)currentTile.Y].tileType != Tile.TileType.GhostHouse)
                 dirs.Add(Dir.Left);
-            if (Controller.returnOppositeDir(direction) != Dir.Right && Game1.gameController.isNextTileAvailableGhosts(Dir.Right, currentTile))
+            if (Controller.returnOppositeDir(direction) != Dir.Right && Game1.gameController.isNextTileAvailableGhosts(Dir.Right, currentTile) && Game1.gameController.tileArray[(int)currentTile.X + 1, (int)currentTile.Y].tileType != Tile.TileType.GhostHouse)
                 dirs.Add(Dir.Right);
-            if (Controller.returnOppositeDir(direction) != Dir.Down && Game1.gameController.isNextTileAvailableGhosts(Dir.Down, currentTile))
+            if (Controller.returnOppositeDir(direction) != Dir.Down && Game1.gameController.isNextTileAvailableGhosts(Dir.Down, currentTile) && Game1.gameController.tileArray[(int)currentTile.X, (int)currentTile.Y + 1].tileType != Tile.TileType.GhostHouse)
                 dirs.Add(Dir.Down);
-            if (Controller.returnOppositeDir(direction) != Dir.Up && Game1.gameController.isNextTileAvailableGhosts(Dir.Up, currentTile))
+            if (Controller.returnOppositeDir(direction) != Dir.Up && Game1.gameController.isNextTileAvailableGhosts(Dir.Up, currentTile) && Game1.gameController.tileArray[(int)currentTile.X, (int)currentTile.Y - 1].tileType != Tile.TileType.GhostHouse)
                 dirs.Add(Dir.Up);
 
-            if (dirs.Count >= 0)
+            if (dirs.Count > 0)
             {
                 Random rd = new Random();
                 int randDirNum = rd.Next(0, dirs.Count);

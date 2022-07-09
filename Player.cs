@@ -30,6 +30,7 @@ namespace Pacman
         Vector2 currentTile;
 
         private SpriteAnimation playerAnim;
+        private int extraLives = 4;
 
         public Player(int tileX, int tileY, Tile[,] tileArray)
         {
@@ -55,6 +56,12 @@ namespace Pacman
             rectsRight[2] = lastRect;
 
             playerAnim = new SpriteAnimation(0.08f, rectsRight, 2);
+        }
+
+        public int ExtraLives
+        {
+            get { return extraLives; }
+            set { extraLives = value; }
         }
 
         public Vector2 CurrentTile

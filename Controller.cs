@@ -45,6 +45,9 @@ namespace Pacman
             { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
 
+        public enum GameState { Normal, GameOver };
+        public GameState gameState = GameState.Normal;
+
         public static int numberOfTilesY;
         public static int numberOfTilesX;
         public static int tileWidth;
@@ -84,7 +87,7 @@ namespace Pacman
                     {
                         tileArray[x, y] = new Tile(new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), Tile.TileType.Snack);
                         tileArray[x, y].isEmpty = false;
-                        //snackList.Add(new Snack(Snack.SnackType.Small, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y}));
+                        snackList.Add(new Snack(Snack.SnackType.Small, new Vector2(x * tileWidth, y * tileHeight + Game1.scoreOffSet), new int[] { x, y}));
                     }
                     else if (mapDesign[y, x] == 1) // wall collider
                     {
@@ -155,6 +158,59 @@ namespace Pacman
             MySounds.retreatingInstance.Stop();
         }
 
+        public void gameOver(Inky i, Blinky b, Pinky p, Clyde c, Player pacman)
+        {
+            gameState = GameState.GameOver;
+
+            Game1.hasPassedInitialSong = false;
+            Game1.score = 0;
+            pacman.ExtraLives = 4;
+
+            createSnacks();
+            resetGhosts(i, b, p, c);
+
+            ghostTimerChaser = 0;
+            ghostTimerScatter = 0;
+            ghostInitialTimer = 0;
+
+            eatenBigSnack = false;
+
+            pacman.Position = new Vector2(tileArray[13, 23].Position.X + 14, tileArray[13, 23].Position.Y);
+            pacman.CurrentTile = new Vector2(13, 23);
+            pacman.PlayerAnim.setSourceRects(Player.rectsRight);
+            pacman.PlayerAnim.setAnimIndex(2);
+            pacman.Direction = Dir.Right;
+
+            MySounds.munchInstance.Stop();
+            MySounds.power_pellet_instance.Stop();
+            MySounds.retreatingInstance.Stop();
+        }
+
+        public void killPacman(Inky i, Blinky b, Pinky p, Clyde c, Player pacman)
+        {
+            pacman.ExtraLives -= 1;
+            MySounds.death_1.Play();
+            Game1.gamePauseTimer = 2.79f;
+
+            resetGhosts(i, b, p, c);
+
+            ghostTimerChaser = 0;
+            ghostTimerScatter = 0;
+            ghostInitialTimer = 0;
+
+            eatenBigSnack = false;
+
+            pacman.Position = new Vector2(tileArray[13, 23].Position.X + 14, tileArray[13, 23].Position.Y);
+            pacman.CurrentTile = new Vector2(13, 23);
+            pacman.PlayerAnim.setSourceRects(Player.rectsRight);
+            pacman.PlayerAnim.setAnimIndex(2);
+            pacman.Direction = Dir.Right;
+
+            MySounds.munchInstance.Stop();
+            MySounds.power_pellet_instance.Stop();
+            MySounds.retreatingInstance.Stop();
+        }
+
         public void drawGridDebugger(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < numberOfTilesX; x++)
@@ -177,7 +233,7 @@ namespace Pacman
             c.Draw(spriteBatch, spriteSheet);
         }
 
-        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Vector2 playerTilePos, Dir playerDir, Vector2 blinkyPos)
+        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Player Pacman, Vector2 blinkyPos)
         {
             if (eatenBigSnack)
             {
@@ -202,21 +258,21 @@ namespace Pacman
             }
             if (ghostInitialTimer > ghostInitialTimerLength / 2 && ghostInitialTimer < ghostInitialTimerLength)
             {
-                i.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+                i.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
             }
             else if (ghostInitialTimer > ghostInitialTimerLength) // When Initial timer ends, starts the timers to switch from scatter to chaser
             {
-                c.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
-                i.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+                c.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+                i.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
                 switchBetweenStates(i, b, p, c, gameTime);
             }
 
-            p.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
-            b.Update(gameTime, gameController, playerTilePos, playerDir, blinkyPos);
+            p.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+            b.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
 
             if (i.colliding == true || b.colliding == true || p.colliding == true || c.colliding == true)
             {
-                resetGhosts(i, b, p, c);
+                killPacman(i, b, p, c, Pacman);
                 i.colliding = false;
                 b.colliding = false;
                 p.colliding = false;

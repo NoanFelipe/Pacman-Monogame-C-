@@ -43,8 +43,8 @@ namespace Pacman
         public static int windowHeight = 744 + scoreOffSet;
         public static int windowWidth = 672;
 
+        public static float gamePauseTimer;
         public static float gameStartSongLength;
-        public static float gameStartTimer;
 
         public static Text text;
 
@@ -56,6 +56,8 @@ namespace Pacman
         Pinky pinky;
 
         Player Pacman;
+
+        public static bool hasPassedInitialSong = false;
 
         public static int score;
 
@@ -133,6 +135,7 @@ namespace Pacman
 
             MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
+            gamePauseTimer += gameStartSongLength;
         }
 
         protected override void Update(GameTime gameTime)
@@ -142,22 +145,35 @@ namespace Pacman
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // checks if starting song finished, if false returns
-            if (gameStartSongLength > gameStartTimer) 
+            if (gameController.gameState == Controller.GameState.GameOver)
             {
-                gameStartTimer += dt;
+                base.Update(gameTime);
+                return;
+            }
+
+            // checks for game over
+            if (Pacman.ExtraLives < 0)
+            {
+                gameController.gameOver(inky, blinky, pinky, clyde, Pacman);
+            }
+
+            // checks if game is paused, if true returns
+            if (gamePauseTimer > 0) 
+            {
+                gamePauseTimer -= dt;
+                hasPassedInitialSong = true;
                 base.Update(gameTime);
                 return;
             }
 
             Pacman.updatePlayerTilePosition(gameController.tileArray); 
             Pacman.Update(gameTime, gameController.tileArray);
-            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinky.CurrentTile);
+            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController, Pacman, blinky.CurrentTile);
 
             if (gameController.snackList.Count == 0)
             {
                 gameController.win(inky, blinky, pinky, clyde, Pacman);
-                gameStartTimer = 0f;
+                gamePauseTimer = 3f;
                 base.Update(gameTime);
             }
 
@@ -170,25 +186,34 @@ namespace Pacman
 
             _spriteBatch.Begin();
 
-            spriteSheet1.drawSprite(_spriteBatch, backgroundRect, new Vector2(0,scoreOffSet)); 
-            text.draw(_spriteBatch, "score - " + score, new Vector2(3,3), 24);
-            foreach (Snack snack in gameController.snackList)
+            if (gameController.gameState == Controller.GameState.Normal)
             {
-                snack.Draw(_spriteBatch);
+                spriteSheet1.drawSprite(_spriteBatch, backgroundRect, new Vector2(0, scoreOffSet));
+                text.draw(_spriteBatch, "score - " + score, new Vector2(3, 3), 24, Text.Color.White);
+                text.draw(_spriteBatch, "lives " + Pacman.ExtraLives, new Vector2(500, 3), 24, Text.Color.White);
+                foreach (Snack snack in gameController.snackList)
+                {
+                    snack.Draw(_spriteBatch);
+                }
+                Pacman.Draw(_spriteBatch, spriteSheet1);
+                if (hasPassedInitialSong || score == 0)
+                    gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
+
+                //gameController.drawGridDebugger(_spriteBatch);
+
+                //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
+                //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
+                //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
+                //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
+
+                //gameController.drawPacmanGridDebugger(_spriteBatch);
+                //Pacman.debugPacmanPosition(_spriteBatch);
+            } 
+            
+            else if (gameController.gameState == Controller.GameState.GameOver)
+            {
+                text.draw(_spriteBatch, "game over!", new Vector2(100, 361), 48, Text.Color.Red, 2f);
             }
-            Pacman.Draw(_spriteBatch, spriteSheet1);
-            if (gameStartTimer > gameStartSongLength || score == 0)
-                gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
-
-            //gameController.drawGridDebugger(_spriteBatch);
-
-            //gameController.drawPathFindingDebugger(_spriteBatch, inky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, blinky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, pinky.PathToPacMan);
-            //gameController.drawPathFindingDebugger(_spriteBatch, clyde.PathToPacMan);
-
-            //gameController.drawPacmanGridDebugger(_spriteBatch);
-            //Pacman.debugPacmanPosition(_spriteBatch);
 
             _spriteBatch.End();
 

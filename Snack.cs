@@ -18,6 +18,7 @@ namespace Pacman
         private Rectangle smallSnackRect = new Rectangle(33, 33, 6, 6);
         private Rectangle bigSnackRect = new Rectangle(24, 72, 24, 24);
         private int radiusOffSet;
+        private int timerBigSnack = 20;
 
         public Vector2 Position
         {
@@ -45,9 +46,17 @@ namespace Pacman
         public void Draw(SpriteBatch spriteBatch)
         {
             if (snackType == SnackType.Small)
-                Game1.spriteSheet1.drawSprite(spriteBatch, smallSnackRect, new Vector2(gridPosition.X + Controller.tileWidth/2 - radiusOffSet, gridPosition.Y + Controller.tileHeight/2 - radiusOffSet));
+                Game1.spriteSheet1.drawSprite(spriteBatch, smallSnackRect, new Vector2(gridPosition.X + Controller.tileWidth / 2 - radiusOffSet, gridPosition.Y + Controller.tileHeight / 2 - radiusOffSet));
             else
-                Game1.spriteSheet1.drawSprite(spriteBatch, bigSnackRect, new Vector2(gridPosition.X + Controller.tileWidth / 2 - radiusOffSet, gridPosition.Y + Controller.tileHeight / 2 - radiusOffSet));
+            { 
+                if (timerBigSnack >= 10 || Game1.gamePauseTimer > 0)
+                    Game1.spriteSheet1.drawSprite(spriteBatch, bigSnackRect, new Vector2(gridPosition.X + Controller.tileWidth / 2 - radiusOffSet, gridPosition.Y + Controller.tileHeight / 2 - radiusOffSet));
+                timerBigSnack -= 1;
+                if (timerBigSnack < 0)
+                {
+                    timerBigSnack = 20;
+                }
+            }
         }
     }
 }
