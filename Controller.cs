@@ -67,6 +67,9 @@ namespace Pacman
 
         public bool eatenBigSnack = false;
 
+        public bool startPacmanDeathAnim = false;
+        public Vector2 pacmanDeathPosition;
+
         public int ghostScoreMultiplier = 1;
         public Controller()
         {
@@ -189,8 +192,10 @@ namespace Pacman
         public void killPacman(Inky i, Blinky b, Pinky p, Clyde c, Player pacman)
         {
             pacman.ExtraLives -= 1;
-            MySounds.death_1.Play();
-            Game1.gamePauseTimer = 2.79f;
+            startPacmanDeathAnim = true;
+            pacmanDeathPosition = new Vector2(pacman.Position.X - Player.radiusOffSet / 2, pacman.Position.Y - Player.radiusOffSet / 2 + 1);
+            MySounds.death_1.Play(); //Length = 2.78
+            Game1.gamePauseTimer = 4f; 
 
             resetGhosts(i, b, p, c);
 
@@ -233,7 +238,7 @@ namespace Pacman
             c.Draw(spriteBatch, spriteSheet);
         }
 
-        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Controller gameController, Player Pacman, Vector2 blinkyPos)
+        public void updateGhosts(Inky i, Blinky b, Pinky p, Clyde c, GameTime gameTime, Player Pacman, Vector2 blinkyPos)
         {
             if (eatenBigSnack)
             {
@@ -258,17 +263,17 @@ namespace Pacman
             }
             if (ghostInitialTimer > ghostInitialTimerLength / 2 && ghostInitialTimer < ghostInitialTimerLength)
             {
-                i.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+                i.Update(gameTime, this, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
             }
             else if (ghostInitialTimer > ghostInitialTimerLength) // When Initial timer ends, starts the timers to switch from scatter to chaser
             {
-                c.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
-                i.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+                c.Update(gameTime, this, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+                i.Update(gameTime, this, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
                 switchBetweenStates(i, b, p, c, gameTime);
             }
 
-            p.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
-            b.Update(gameTime, gameController, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+            p.Update(gameTime, this, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
+            b.Update(gameTime, this, Pacman.CurrentTile, Pacman.Direction, blinkyPos);
 
             if (i.colliding == true || b.colliding == true || p.colliding == true || c.colliding == true)
             {

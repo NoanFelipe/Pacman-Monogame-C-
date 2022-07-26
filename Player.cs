@@ -15,7 +15,8 @@ namespace Pacman
         private Dir direction = Dir.Right;
         private Dir nextDirection = Dir.None;
         private int speed = 150;
-        private int radiusOffSet = 19;
+        public static int radiusOffSet = 19;
+        public static Rectangle[] deathAnimRect = new Rectangle[11];
         private static Rectangle lastRect = new Rectangle(1467, 3, 39, 39);
         public static Rectangle[] rectsDown = new Rectangle[3];
         public static Rectangle[] rectsUp = new Rectangle[3];
@@ -54,6 +55,18 @@ namespace Pacman
             rectsRight[0] = new Rectangle(1371, 3, 39, 39);
             rectsRight[1] = new Rectangle(1419, 3, 39, 39);
             rectsRight[2] = lastRect;
+
+            deathAnimRect[0] = new Rectangle(1515, 3, 39, 39);
+            deathAnimRect[1] = new Rectangle(1563, 3, 39, 39);
+            deathAnimRect[2] = new Rectangle(1611, 3, 39, 39);
+            deathAnimRect[3] = new Rectangle(1659, 3, 39, 39);
+            deathAnimRect[4] = new Rectangle(1707, 6, 39, 39);
+            deathAnimRect[5] = new Rectangle(1755, 9, 39, 39);
+            deathAnimRect[6] = new Rectangle(1803, 12, 39, 39);
+            deathAnimRect[7] = new Rectangle(1851, 12, 39, 39);
+            deathAnimRect[8] = new Rectangle(1899, 12, 39, 39);
+            deathAnimRect[9] = new Rectangle(1947, 9, 39, 39);
+            deathAnimRect[10] = new Rectangle(1995, 15, 39, 39);
 
             playerAnim = new SpriteAnimation(0.08f, rectsRight, 2);
         }

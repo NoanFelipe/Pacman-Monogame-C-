@@ -14,11 +14,19 @@ namespace Pacman
         private float threshold;
         private Rectangle[] sourceRectangles;
         private int animationIndex = 0;
+        private bool isLooped = true;
+        private bool isPlaying;
+
+        public bool IsPlaying
+        {
+            get { return isPlaying; }
+        }
 
         public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles)
         {
             threshold = newThreshold;
             sourceRectangles = newSourceRectangles;
+            isPlaying = true;
         }
 
         public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles, int startingAnimIndex)
@@ -26,6 +34,16 @@ namespace Pacman
             threshold = newThreshold;
             sourceRectangles = newSourceRectangles;
             animationIndex = startingAnimIndex;
+            isPlaying = true;
+        }
+
+        public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles, int startingAnimIndex, bool newIsLooped, bool newIsPlaying)
+        {
+            threshold = newThreshold;
+            sourceRectangles = newSourceRectangles;
+            animationIndex = startingAnimIndex;
+            isLooped = newIsLooped;
+            isPlaying = newIsPlaying;
         }
 
         public void setAnimIndex (int newAnimIndex)
@@ -40,6 +58,12 @@ namespace Pacman
             sourceRectangles = newSourceRects;
         }
 
+        public void start()
+        {
+            isPlaying = true;
+            animationIndex = 0;
+        }
+
         public Rectangle[] SourceRectangles
         {
             get { return sourceRectangles; }
@@ -47,24 +71,49 @@ namespace Pacman
 
         public void Update(GameTime gameTime)
         {
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer > threshold)
+            if (isLooped)
             {
-                timer -= threshold;
-                if (animationIndex < sourceRectangles.Length - 1)
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (timer > threshold)
                 {
-                    animationIndex++;
+                    timer -= threshold;
+                    if (animationIndex < sourceRectangles.Length - 1)
+                    {
+                        animationIndex++;
+                    }
+                    else
+                    {
+                        animationIndex = 0;
+                    }
                 }
-                else
+                return;
+            }
+            // if not looped, plays animation once and then stops (by setting isPlaying to false)
+            else
+            {
+                if (isPlaying)
                 {
-                    animationIndex = 0;
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (timer > threshold)
+                    {
+                        timer -= threshold;
+                        if (animationIndex < sourceRectangles.Length - 1)
+                        {
+                            animationIndex++;
+                        }
+                        else
+                        {
+                            isPlaying = false;
+                        }
+                    }
                 }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteSheet spriteSheet, Vector2 position)
         {
-            spriteSheet.drawSprite(spriteBatch, sourceRectangles[animationIndex], position);
+            if (isPlaying)
+                spriteSheet.drawSprite(spriteBatch, sourceRectangles[animationIndex], position);
         }
     }
 }

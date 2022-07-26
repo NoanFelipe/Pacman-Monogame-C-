@@ -57,7 +57,10 @@ namespace Pacman
 
         Player Pacman;
 
+        public SpriteAnimation pacmanDeathAnimation;
+
         public static bool hasPassedInitialSong = false;
+        public static bool hasPauseJustEnded;
 
         public static int score;
 
@@ -104,6 +107,10 @@ namespace Pacman
             MySounds.retreatingInstance.IsLooped = true;
 
             MySounds.siren_1 = Content.Load<SoundEffect>("Sounds/siren_1");
+            MySounds.siren_1_instance = MySounds.siren_1.CreateInstance();
+            MySounds.siren_1_instance.Volume = 0.8f;
+            MySounds.siren_1_instance.IsLooped = true;
+
             MySounds.siren_2 = Content.Load<SoundEffect>("Sounds/siren_2");
             MySounds.siren_3 = Content.Load<SoundEffect>("Sounds/siren_3");
             MySounds.siren_4 = Content.Load<SoundEffect>("Sounds/siren_4");
@@ -132,6 +139,8 @@ namespace Pacman
             clyde = new Clyde(15, 14, gameController.tileArray);
 
             Pacman = new Player(13, 23, gameController.tileArray);
+
+            pacmanDeathAnimation = new SpriteAnimation(0.2f, Player.deathAnimRect, 0, false, false);
 
             MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
@@ -162,13 +171,30 @@ namespace Pacman
             {
                 gamePauseTimer -= dt;
                 hasPassedInitialSong = true;
+
+                pacmanDeathAnimation.Update(gameTime);
+
+                MySounds.siren_1_instance.Stop();
+                hasPauseJustEnded = true;
+
                 base.Update(gameTime);
                 return;
             }
 
+            if (hasPauseJustEnded)
+            {
+                MySounds.siren_1_instance.Play();
+                hasPauseJustEnded = false;
+            }
+
             Pacman.updatePlayerTilePosition(gameController.tileArray); 
             Pacman.Update(gameTime, gameController.tileArray);
-            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, gameController, Pacman, blinky.CurrentTile);
+            gameController.updateGhosts(inky, blinky, pinky, clyde, gameTime, Pacman, blinky.CurrentTile);
+            if (gameController.startPacmanDeathAnim)
+            {
+                gameController.startPacmanDeathAnim = false;
+                pacmanDeathAnimation.start();
+            }
 
             if (gameController.snackList.Count == 0)
             {
@@ -195,9 +221,13 @@ namespace Pacman
                 {
                     snack.Draw(_spriteBatch);
                 }
-                Pacman.Draw(_spriteBatch, spriteSheet1);
+                if (!pacmanDeathAnimation.IsPlaying)
+                    Pacman.Draw(_spriteBatch, spriteSheet1);
                 if (hasPassedInitialSong || score == 0)
-                    gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
+                    if (!pacmanDeathAnimation.IsPlaying)
+                        gameController.drawGhosts(inky, blinky, pinky, clyde, _spriteBatch, spriteSheet1);
+
+                pacmanDeathAnimation.Draw(_spriteBatch, spriteSheet1, gameController.pacmanDeathPosition);
 
                 //gameController.drawGridDebugger(_spriteBatch);
 

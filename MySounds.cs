@@ -26,6 +26,7 @@ namespace Pacman
         public static SoundEffect retreating;
         public static SoundEffectInstance retreatingInstance;
         public static SoundEffect siren_1;
+        public static SoundEffectInstance siren_1_instance;
         public static SoundEffect siren_2;
         public static SoundEffect siren_3;
         public static SoundEffect siren_4;
