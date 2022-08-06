@@ -57,7 +57,7 @@ namespace Pacman
 
         Player Pacman;
 
-        public SpriteAnimation pacmanDeathAnimation;
+        public static SpriteAnimation pacmanDeathAnimation;
 
         public static bool hasPassedInitialSong = false;
         public static bool hasPauseJustEnded;
@@ -128,6 +128,10 @@ namespace Pacman
             spriteSheet1 = new SpriteSheet(GeneralSprites1);
             spriteSheet2 = new SpriteSheet(GeneralSprites2);
 
+            Menu.setPacmanLogo = Content.Load<Texture2D>("SpriteSheets/pac-man-logo");
+            Menu.setBasicFont = Content.Load<SpriteFont>("simpleFont");
+            GameOver.setBasicFont = Content.Load<SpriteFont>("simpleFont");
+
             text = new Text(new SpriteSheet(Content.Load<Texture2D>("Spritesheets/TextSprites")));
 
             gameController = new Controller();
@@ -140,9 +144,8 @@ namespace Pacman
 
             Pacman = new Player(13, 23, gameController.tileArray);
 
-            pacmanDeathAnimation = new SpriteAnimation(0.2f, Player.deathAnimRect, 0, false, false);
+            pacmanDeathAnimation = new SpriteAnimation(0.278f, Player.deathAnimRect, 0, false, false);
 
-            MySounds.game_start.Play();
             gameStartSongLength = 4.23f;
             gamePauseTimer += gameStartSongLength;
         }
@@ -156,12 +159,20 @@ namespace Pacman
 
             if (gameController.gameState == Controller.GameState.GameOver)
             {
+                GameOver.Update();
+                base.Update(gameTime);
+                return;
+            }
+
+            if (gameController.gameState == Controller.GameState.Menu)
+            {
+                Menu.Update(gameTime);
                 base.Update(gameTime);
                 return;
             }
 
             // checks for game over
-            if (Pacman.ExtraLives < 0)
+            if (Pacman.ExtraLives < 0 && !pacmanDeathAnimation.IsPlaying)
             {
                 gameController.gameOver(inky, blinky, pinky, clyde, Pacman);
             }
@@ -216,7 +227,11 @@ namespace Pacman
             {
                 spriteSheet1.drawSprite(_spriteBatch, backgroundRect, new Vector2(0, scoreOffSet));
                 text.draw(_spriteBatch, "score - " + score, new Vector2(3, 3), 24, Text.Color.White);
-                text.draw(_spriteBatch, "lives " + Pacman.ExtraLives, new Vector2(500, 3), 24, Text.Color.White);
+                if (Pacman.ExtraLives != -1)
+                    text.draw(_spriteBatch, "lives " + Pacman.ExtraLives, new Vector2(500, 3), 24, Text.Color.White);
+                else
+                    text.draw(_spriteBatch, "lives 0", new Vector2(500, 3), 24, Text.Color.White);
+
                 foreach (Snack snack in gameController.snackList)
                 {
                     snack.Draw(_spriteBatch);
@@ -242,7 +257,12 @@ namespace Pacman
             
             else if (gameController.gameState == Controller.GameState.GameOver)
             {
-                text.draw(_spriteBatch, "game over!", new Vector2(100, 361), 48, Text.Color.Red, 2f);
+                GameOver.Draw(_spriteBatch, text);
+            }
+
+            else if (gameController.gameState == Controller.GameState.Menu)
+            {
+                Menu.Draw(_spriteBatch);
             }
 
             _spriteBatch.End();

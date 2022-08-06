@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/credit.wav</SourceFile>
   <SourceTime>2022-03-21T15:04:45.5513105-03:00</SourceTime>
   <DestFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/Sounds/credit.xnb</DestFile>
-  <DestTime>2022-03-23T15:53:12.4135156-03:00</DestTime>
+  <DestTime>2022-07-26T18:01:34.691112-03:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2020-08-10T13:17:54-03:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

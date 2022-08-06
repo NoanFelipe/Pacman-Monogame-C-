@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/retreating.wav</SourceFile>
   <SourceTime>2022-03-21T15:04:45.604703-03:00</SourceTime>
   <DestFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/Sounds/retreating.xnb</DestFile>
-  <DestTime>2022-03-23T15:53:26.5647491-03:00</DestTime>
+  <DestTime>2022-07-26T18:01:55.0705745-03:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2020-08-10T13:17:54-03:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

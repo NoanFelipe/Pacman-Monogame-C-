@@ -45,8 +45,8 @@ namespace Pacman
             { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
 
-        public enum GameState { Normal, GameOver };
-        public GameState gameState = GameState.Normal;
+        public enum GameState { Normal, GameOver, Menu };
+        public GameState gameState = GameState.Menu;
 
         public static int numberOfTilesY;
         public static int numberOfTilesX;
@@ -167,6 +167,8 @@ namespace Pacman
 
             Game1.hasPassedInitialSong = false;
             Game1.score = 0;
+            Game1.pacmanDeathAnimation.IsPlaying = false;
+            Game1.gamePauseTimer = Game1.gameStartSongLength;
             pacman.ExtraLives = 4;
 
             createSnacks();
@@ -195,7 +197,7 @@ namespace Pacman
             startPacmanDeathAnim = true;
             pacmanDeathPosition = new Vector2(pacman.Position.X - Player.radiusOffSet / 2, pacman.Position.Y - Player.radiusOffSet / 2 + 1);
             MySounds.death_1.Play(); //Length = 2.78
-            Game1.gamePauseTimer = 4f; 
+            Game1.gamePauseTimer = 4f;
 
             resetGhosts(i, b, p, c);
 

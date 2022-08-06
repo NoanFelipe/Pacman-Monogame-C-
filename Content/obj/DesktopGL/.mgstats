@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/power_pellet.wav","C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/Sounds/power_pellet.xnb","SoundEffectProcessor","SoundEffectContent",185926,185987,3,3532171
+"C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/simpleFont.spritefont","C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/simpleFont.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21538,8,788256

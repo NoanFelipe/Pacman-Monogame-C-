@@ -17,9 +17,15 @@ namespace Pacman
         private bool isLooped = true;
         private bool isPlaying;
 
+        public int AnimationIndex
+        {
+            get { return animationIndex; }
+        }
+
         public bool IsPlaying
         {
             get { return isPlaying; }
+            set { isPlaying = value; }
         }
 
         public SpriteAnimation(float newThreshold, Rectangle[] newSourceRectangles)

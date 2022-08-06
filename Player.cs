@@ -31,7 +31,7 @@ namespace Pacman
         Vector2 currentTile;
 
         private SpriteAnimation playerAnim;
-        private int extraLives = 4;
+        private int extraLives = 0;
 
         public Player(int tileX, int tileY, Tile[,] tileArray)
         {

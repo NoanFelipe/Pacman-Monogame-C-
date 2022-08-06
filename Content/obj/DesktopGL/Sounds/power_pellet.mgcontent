@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/Sounds/power_pellet.wav</SourceFile>
   <SourceTime>2022-01-18T10:52:35-03:00</SourceTime>
   <DestFile>C:/Users/noanf/OneDrive/Área de Trabalho/Programação/C#/My projects/Pacman/Content/bin/DesktopGL/Sounds/power_pellet.xnb</DestFile>
-  <DestTime>2022-06-13T20:37:06.6242488-03:00</DestTime>
+  <DestTime>2022-07-26T18:01:53.2159054-03:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2020-08-10T13:17:54-03:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
